@@ -1,7 +1,7 @@
 # 0004. Core markdown download loop
 
 **Date**: 2026-09-20
-**Status**: Proposed
+**Status**: In Progress
 
 ## Summary
 

@@ -21,6 +21,15 @@ export function buildTurndownConfig(imageHandling: 'strip' | 'preserve'): Turndo
   return turndown;
 }
 
+export function convertHtmlToMarkdown(
+  html: string,
+  options: { imageHandling?: 'strip' | 'preserve' } = {},
+): string {
+  const turndown = buildTurndownConfig(options.imageHandling ?? 'preserve');
+  return turndown.turndown(html);
+}
+
 export function getConversionOptions(): ConversionOptions {
   return { ...CONVERSION_OPTIONS };
 }
+

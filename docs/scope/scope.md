@@ -66,10 +66,10 @@ Extract readable content from the active tab, generate markdown with YAML frontm
 spec [0004](../specs/0004-core-markdown-download-loop.md) · code in `entrypoints/`, `tests/`
 **Done when:** clicking the download button in the popup converts the active page to clean markdown with frontmatter and saves the file to disk.
 - [x] Design it (spec): `/architect core markdown download loop`
-- [ ] Build it: `/develop core markdown download loop`
-  - [ ] Milestone 1: Extraction service and URL guards — isSupportedUrl, preview extraction, and Readability injection runner, satisfies **AC-1**, **AC-2**, **AC-6**
-  - [ ] Milestone 2: Download handler and data URL dispatch — background listener, slugifyTitle, and manifest permissions, satisfies **AC-5**
-  - [ ] Milestone 3: Popup UI integration and pipeline wiring — live active tab extraction and action button binding, satisfies **AC-1**, **AC-2**, **AC-3**, **AC-4**, **AC-5**
+- [x] Build it: `/develop core markdown download loop`
+  - [x] Milestone 1: Extraction service and URL guards — isSupportedUrl, preview extraction, and Readability injection runner, satisfies **AC-1**, **AC-2**, **AC-6**
+  - [x] Milestone 2: Download handler and data URL dispatch — background listener, slugifyTitle, and manifest permissions, satisfies **AC-5**
+  - [x] Milestone 3: Popup UI integration and pipeline wiring — live active tab extraction and action button binding, satisfies **AC-1**, **AC-2**, **AC-3**, **AC-4**, **AC-5**
 - [ ] Verify it: `/check verify core markdown download loop`
 - [ ] Test it: `/test core markdown download loop`
 

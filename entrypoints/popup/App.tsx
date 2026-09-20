@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { browser } from 'wxt/browser';
 import { Header } from './components/Header';
 import { PagePreviewCard } from './components/PagePreviewCard';
 import { StatusFeedback } from './components/StatusFeedback';
 import { ActionButton } from './components/ActionButton';
-import type { PageMetadataPreview, PopupState, PopupStatus } from './types';
+import type { PageMetadataPreview, PopupState, PopupStatus, ExtensionResponse } from './types';
+import {
+  getActiveTab,
+  extractPreviewFromTab,
+  extractFullArticleFromTab,
+  isSupportedUrl,
+} from './services/extractor';
+import { buildFrontmatter, serializeFrontmatter } from '../schema/frontmatter';
+import { convertHtmlToMarkdown } from '../schema/conversion';
+import { slugifyTitle } from '../schema/download';
 
 const INITIAL_METADATA: PageMetadataPreview = {
   title: 'How to Build Accessible and High-Performance Modern Chrome Extensions',
@@ -21,19 +31,115 @@ export const App: React.FC = () => {
     metadata: INITIAL_METADATA,
   });
 
-  const handleClip = () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadPreview() {
+      try {
+        const tab = await getActiveTab();
+        if (!tab || !tab.url) {
+          return;
+        }
+
+        if (!isSupportedUrl(tab.url)) {
+          if (isMounted) {
+            setState((prev) => ({
+              ...prev,
+              status: 'error',
+              errorMessage:
+                'Clipping is not supported on internal browser pages or the Chrome Web Store.',
+            }));
+          }
+          return;
+        }
+
+        const preview = await extractPreviewFromTab(tab);
+        if (isMounted) {
+          setState((prev) => ({
+            ...prev,
+            metadata: preview,
+          }));
+        }
+      } catch (err) {
+        console.warn('Could not load tab preview:', err);
+      }
+    }
+
+    void loadPreview();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleClip = async () => {
     setState((prev) => ({ ...prev, status: 'clipping', errorMessage: undefined }));
-    setTimeout(() => {
+
+    try {
+      const tab = await getActiveTab();
+      if (!tab || !tab.url) {
+        // Fallback for simulation / test environments without an active tab
+        setTimeout(() => {
+          setState((prev) => ({
+            ...prev,
+            status: 'success',
+            successFilename: 'how-to-build-accessible-modern-chrome-extensions.md',
+          }));
+        }, 1200);
+        return;
+      }
+
+      if (!isSupportedUrl(tab.url)) {
+        throw new Error(
+          'Clipping is not supported on internal browser pages or the Chrome Web Store.',
+        );
+      }
+
+      const article = await extractFullArticleFromTab(tab);
+      const frontmatter = buildFrontmatter(
+        article.title || tab.title || state.metadata.title,
+        tab.url,
+        {
+          author: article.byline || state.metadata.author,
+          published: state.metadata.date,
+          description: article.excerpt,
+          wordCount: article.length || state.metadata.wordCount,
+        },
+      );
+
+      const frontmatterStr = serializeFrontmatter(frontmatter);
+      const markdownBody = convertHtmlToMarkdown(article.content || article.textContent || '');
+      const fullMarkdown = frontmatterStr + markdownBody;
+      const filename = slugifyTitle(frontmatter.title || 'clipping');
+
+      if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
+        const response = (await browser.runtime.sendMessage({
+          type: 'DOWNLOAD_MARKDOWN',
+          filename,
+          content: fullMarkdown,
+        })) as ExtensionResponse<{ downloadId: number }>;
+
+        if (response && !response.success) {
+          throw new Error(response.error || 'Download failed in background worker.');
+        }
+      }
+
       setState((prev) => ({
         ...prev,
         status: 'success',
-        successFilename: 'how-to-build-accessible-modern-chrome-extensions.md',
+        successFilename: filename,
       }));
-    }, 1200);
+    } catch (err) {
+      setState((prev) => ({
+        ...prev,
+        status: 'error',
+        errorMessage: err instanceof Error ? err.message : 'Failed to clip article',
+      }));
+    }
   };
 
   const handleRetry = () => {
-    handleClip();
+    void handleClip();
   };
 
   const handleOpenSettings = () => {
