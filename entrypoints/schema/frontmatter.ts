@@ -15,11 +15,14 @@ export function getTitleFallback(url: string): string {
   }
 }
 
+export const MAX_DESCRIPTION_LENGTH = 200;
+export const WORDS_PER_MINUTE_READING_SPEED = 200;
+
 export function normalizeDate(date: string): string | undefined {
   if (!date) return undefined;
-  const d = new Date(date);
-  if (isNaN(d.getTime())) return undefined;
-  return d.toISOString();
+  const parsedDate = new Date(date);
+  if (isNaN(parsedDate.getTime())) return undefined;
+  return parsedDate.toISOString();
 }
 
 export function buildFrontmatter(
@@ -59,7 +62,9 @@ export function buildFrontmatter(
   ) {
     const trimmed = options.description.trim();
     frontmatter.description =
-      trimmed.length > 200 ? trimmed.slice(0, 200) : trimmed;
+      trimmed.length > MAX_DESCRIPTION_LENGTH
+        ? trimmed.slice(0, MAX_DESCRIPTION_LENGTH)
+        : trimmed;
   }
 
   if (
@@ -73,7 +78,7 @@ export function buildFrontmatter(
     if (isEnabled('reading_time')) {
       frontmatter.reading_time = Math.max(
         1,
-        Math.ceil(options.wordCount / 200),
+        Math.ceil(options.wordCount / WORDS_PER_MINUTE_READING_SPEED),
       );
     }
   }

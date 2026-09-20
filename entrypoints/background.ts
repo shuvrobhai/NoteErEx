@@ -1,5 +1,5 @@
 import { initializeStorage, migrateStorage } from './schema/storage';
-import { downloadMarkdown, slugifyTitle } from './schema/download';
+import { downloadMarkdown, formatMarkdownFilename } from './schema/download';
 import { buildFrontmatter, serializeFrontmatter } from './schema/frontmatter';
 import { convertHtmlToMarkdown } from './schema/conversion';
 import {
@@ -66,7 +66,7 @@ export async function handleCommandClip(
     const frontmatterStr = serializeFrontmatter(frontmatter);
     const markdownBody = convertHtmlToMarkdown(selectionPayload.selectionHtml);
     fullMarkdown = frontmatterStr + markdownBody;
-    filename = slugifyTitle(frontmatter.title || 'clipping', {
+    filename = formatMarkdownFilename(frontmatter.title || 'clipping', {
       suffix: 'highlight',
     });
   } else {
@@ -91,7 +91,7 @@ export async function handleCommandClip(
       article.content || article.textContent || '',
     );
     fullMarkdown = frontmatterStr + markdownBody;
-    filename = slugifyTitle(frontmatter.title || 'article');
+    filename = formatMarkdownFilename(frontmatter.title || 'article');
   }
 
   const downloadId = await downloadMarkdown(fullMarkdown, filename);
@@ -217,6 +217,7 @@ export { matchPreset, applyPreset, mergeConfig } from './schema/presets';
 export { createClipError, handleError } from './schema/errors';
 export {
   downloadMarkdown,
+  formatMarkdownFilename,
   slugifyTitle,
   createMarkdownDataUrl,
   downloadMarkdownWithFrontmatter,

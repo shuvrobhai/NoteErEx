@@ -21,7 +21,7 @@ import {
 } from './services/extractor';
 import { buildFrontmatter, serializeFrontmatter } from '../schema/frontmatter';
 import { convertHtmlToMarkdown } from '../schema/conversion';
-import { slugifyTitle } from '../schema/download';
+import { formatMarkdownFilename } from '../schema/download';
 import type { HighlightMarkdownFrontmatter } from '../schema/types';
 
 const INITIAL_METADATA: PageMetadataPreview = {
@@ -35,7 +35,7 @@ const INITIAL_METADATA: PageMetadataPreview = {
   presetName: 'Default',
 };
 
-const SNIPPET_MAX = 160;
+const MAX_SNIPPET_CHARS = 160;
 
 export const App: React.FC = () => {
   const [state, setState] = useState<PopupState>({
@@ -88,9 +88,10 @@ export const App: React.FC = () => {
                   html: selectionResult.html,
                   wordCount: selectionResult.wordCount,
                   snippet:
-                    selectionResult.text.length > SNIPPET_MAX
-                      ? selectionResult.text.slice(0, SNIPPET_MAX).trim() +
-                        '...'
+                    selectionResult.text.length > MAX_SNIPPET_CHARS
+                      ? selectionResult.text
+                          .slice(0, MAX_SNIPPET_CHARS)
+                          .trim() + '...'
                       : selectionResult.text,
                 }
               : undefined,
@@ -155,9 +156,12 @@ export const App: React.FC = () => {
           selectionPayload.selectionHtml,
         );
         const fullMarkdown = frontmatterStr + markdownBody;
-        const filename = slugifyTitle(frontmatter.title || 'clipping', {
-          suffix: 'highlight',
-        });
+        const filename = formatMarkdownFilename(
+          frontmatter.title || 'clipping',
+          {
+            suffix: 'highlight',
+          },
+        );
 
         if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
           const response = (await browser.runtime.sendMessage({
@@ -182,6 +186,11 @@ export const App: React.FC = () => {
       }
 
       const article = await extractFullArticleFromTab(tab);
+      const words = (article.textContent || '')
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+      const wordCount = words.length || state.metadata.wordCount;
       const frontmatter = buildFrontmatter(
         article.title || tab.title || state.metadata.title,
         tab.url,
@@ -189,7 +198,7 @@ export const App: React.FC = () => {
           author: article.byline || state.metadata.author,
           published: state.metadata.date,
           description: article.excerpt,
-          wordCount: article.length || state.metadata.wordCount,
+          wordCount,
         },
       );
 
@@ -198,7 +207,7 @@ export const App: React.FC = () => {
         article.content || article.textContent || '',
       );
       const fullMarkdown = frontmatterStr + markdownBody;
-      const filename = slugifyTitle(frontmatter.title || 'clipping');
+      const filename = formatMarkdownFilename(frontmatter.title || 'clipping');
 
       if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
         const response = (await browser.runtime.sendMessage({
@@ -239,7 +248,7 @@ export const App: React.FC = () => {
     }
   };
 
-  const setManualStatus = (status: PopupStatus) => {
+  const setDebugPreviewStatus = (status: PopupStatus) => {
     if (status === 'error') {
       setState((prev) => ({
         ...prev,
@@ -301,25 +310,25 @@ export const App: React.FC = () => {
         <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-500">
           <span>Visual state:</span>
           <div className="flex gap-1">
-            {(['idle', 'clipping', 'success', 'error'] as const).map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setManualStatus(s)}
-                className={`rounded px-1.5 py-0.5 font-mono text-[10px] capitalize transition-colors ${
-                  state.status === s
-                    ? 'bg-slate-200 font-semibold text-slate-800 dark:bg-slate-700 dark:text-slate-200'
-                    : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-400'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+            {(['idle', 'clipping', 'success', 'error'] as const).map(
+              (status) => (
+                <button
+                  key={status}
+                  type="button"
+                  onClick={() => setDebugPreviewStatus(status)}
+                  className={`rounded px-1.5 py-0.5 font-mono text-[10px] capitalize transition-colors ${
+                    state.status === status
+                      ? 'bg-slate-200 font-semibold text-slate-800 dark:bg-slate-700 dark:text-slate-200'
+                      : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-400'
+                  }`}
+                >
+                  {status}
+                </button>
+              ),
+            )}
           </div>
         </div>
       </footer>
     </div>
   );
 };
-
-export default App;

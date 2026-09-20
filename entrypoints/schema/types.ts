@@ -71,7 +71,8 @@ export interface Preset {
 export interface ConversionOptions {
   bulletListMarker: '-';
   removeComments: true;
-  codeBlockLang: true;
+  codeBlockLang?: true;
+  preserveCodeBlockLanguage?: true;
 }
 
 export interface ClipError {

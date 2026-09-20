@@ -34,8 +34,11 @@ export const DEFAULT_PRESET: import('./types').Preset = {
   schemaVersion: CURRENT_SCHEMA_VERSION,
 };
 
-export const CONVERSION_OPTIONS = {
+export const DEFAULT_CONVERSION_OPTIONS = {
   bulletListMarker: '-' as const,
   removeComments: true as const,
   codeBlockLang: true as const,
+  preserveCodeBlockLanguage: true as const,
 };
+
+export const CONVERSION_OPTIONS = DEFAULT_CONVERSION_OPTIONS;

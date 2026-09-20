@@ -17,8 +17,10 @@ export function createClipError(
   };
 }
 
+const BADGE_CLEAR_DELAY_MS = 3000;
+
 export async function handleError(error: ClipError): Promise<void> {
-  const preferences = await getPreferences();
+  const preferences = await fetchStoredPreferences();
 
   if (preferences.notificationEnabled) {
     try {
@@ -40,13 +42,13 @@ export async function handleError(error: ClipError): Promise<void> {
     await browser.action.setBadgeBackgroundColor({ color: '#ff4444' });
     setTimeout(async () => {
       await browser.action.setBadgeText({ text: '' });
-    }, 3000);
+    }, BADGE_CLEAR_DELAY_MS);
   } catch {
     // Badge update failed
   }
 }
 
-async function getPreferences() {
-  const { getPreferences: getPrefs } = await import('./storage');
-  return getPrefs();
+async function fetchStoredPreferences() {
+  const { getPreferences } = await import('./storage');
+  return getPreferences();
 }
