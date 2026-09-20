@@ -17,7 +17,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Popup UI foundation | Foundation | done |
 | 5 | Core markdown download loop | Slice 1 | done |
 | 6 | Selected text clipping | Slice 2 | done |
-| 7 | Keyboard shortcut trigger | Slice 3 | planned |
+| 7 | Keyboard shortcut trigger | Slice 3 | in-progress |
 
 ## Foundations
 
@@ -91,8 +91,16 @@ spec [0005](../specs/0005-selected-text-clipping.md) · code in `entrypoints/`, 
 
 ### 7. Keyboard shortcut trigger
 Register a browser command hotkey in the manifest to trigger the markdown download instantly without clicking the popup.
+spec [0006](../specs/0006-keyboard-shortcut-trigger.md) · code in `entrypoints/`, `tests/`
 **Done when:** pressing the configured shortcut downloads the current page markdown immediately and shows a brief notification.
+- [x] Design it (spec): `/architect keyboard shortcut trigger`
 - [ ] Build it: `/develop keyboard shortcut trigger`
+  - [ ] Milestone 1: Command declaration and permissions — manifest commands in wxt.config.ts, satisfies **AC-1**
+  - [ ] Milestone 2: Shared extraction and URL guards — refactor isSupportedUrl and runner execution into shared module, satisfies **AC-2**, **AC-6**
+  - [ ] Milestone 3: Background command listener and conversion — browser.commands listener, selection aware routing, Turndown conversion, and download dispatch, satisfies **AC-2**, **AC-3**, **AC-4**
+  - [ ] Milestone 4: Notification feedback and badge status — system notifications for success and errors, and transient badge indicator, satisfies **AC-5**
+- [ ] Verify it: `/check verify keyboard shortcut trigger`
+- [ ] Test it: `/test keyboard shortcut trigger`
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.

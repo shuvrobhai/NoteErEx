@@ -124,7 +124,7 @@ Custom agents in `.agents/agents/`:
 
 ## Specs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Specs: [0001-extension-stack-and-architecture.md](docs/specs/0001-extension-stack-and-architecture.md), [0002-extension-schema-and-settings.md](docs/specs/0002-extension-schema-and-settings.md), [0003-popup-ui-foundation.md](docs/specs/0003-popup-ui-foundation.md), [0004-core-markdown-download-loop.md](docs/specs/0004-core-markdown-download-loop.md), [0005-selected-text-clipping.md](docs/specs/0005-selected-text-clipping.md).
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Specs: [0001-extension-stack-and-architecture.md](docs/specs/0001-extension-stack-and-architecture.md), [0002-extension-schema-and-settings.md](docs/specs/0002-extension-schema-and-settings.md), [0003-popup-ui-foundation.md](docs/specs/0003-popup-ui-foundation.md), [0004-core-markdown-download-loop.md](docs/specs/0004-core-markdown-download-loop.md), [0005-selected-text-clipping.md](docs/specs/0005-selected-text-clipping.md), [0006-keyboard-shortcut-trigger.md](docs/specs/0006-keyboard-shortcut-trigger.md).
 
 ## Rules
 
