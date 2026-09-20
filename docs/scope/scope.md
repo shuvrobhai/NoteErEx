@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Extension schema and settings | Foundation | done |
-| 4 | Popup UI foundation | Foundation | in-progress |
+| 4 | Popup UI foundation | Foundation | done |
 | 5 | Core markdown download loop | Slice 1 | planned |
 | 6 | Selected text clipping | Slice 2 | planned |
 | 7 | Keyboard shortcut trigger | Slice 3 | planned |
@@ -57,7 +57,7 @@ spec [0003](../specs/0003-popup-ui-foundation.md) · code in `entrypoints/popup/
   - [x] Milestone 1: Design tokens and container layout — Tailwind base setup and container dimensions, satisfies **AC-1**, **AC-6**
   - [x] Milestone 2: Header and preview card — branding, preset badge, and metadata chips, satisfies **AC-2**, **AC-3**
   - [x] Milestone 3: Interactive controls and feedback — action button and status alert states, satisfies **AC-4**, **AC-5**
-- [ ] Verify it: `/check verify popup UI foundation`
+- [x] Verify it: `/check verify popup UI foundation`
 
 ## Slice 1: Core markdown download loop
 

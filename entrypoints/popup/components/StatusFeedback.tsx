@@ -113,7 +113,7 @@ export const StatusFeedback: React.FC<StatusFeedbackProps> = ({
             <button
               type="button"
               onClick={onRetry}
-              className="shrink-0 rounded-md bg-rose-100 px-2 py-1 text-[11px] font-medium text-rose-700 hover:bg-rose-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-rose-500 dark:bg-rose-900/60 dark:text-rose-200 dark:hover:bg-rose-800/80"
+              className="shrink-0 rounded-md bg-rose-100 px-2 py-1 text-[11px] font-medium text-rose-700 hover:bg-rose-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:bg-rose-900/60 dark:text-rose-200 dark:hover:bg-rose-800/80"
             >
               Retry
             </button>

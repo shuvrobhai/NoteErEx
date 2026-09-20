@@ -1,7 +1,7 @@
 # 0003. Popup UI foundation
 
 **Date**: 2026-09-20
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
