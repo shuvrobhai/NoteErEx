@@ -19,7 +19,9 @@ describe('Download Service (Feature 5, Milestone 2)', () => {
     });
 
     it('strips illegal filesystem characters', () => {
-      const result = slugifyTitle('What / Why : A * Guide ? For "Modern" <Web> | Devs');
+      const result = slugifyTitle(
+        'What / Why : A * Guide ? For "Modern" <Web> | Devs',
+      );
       expect(result).toBe('what-why-a-guide-for-modern-web-devs.md');
       expect(result).not.toMatch(/[/\\:*?"<>|]/);
     });
@@ -44,10 +46,13 @@ describe('Download Service (Feature 5, Milestone 2)', () => {
 
   describe('createMarkdownDataUrl', () => {
     it('creates a UTF-8 encoded data URL for markdown content', () => {
-      const markdown = '# Hello World\n\nThis is **bold** text with emojis 🚀 & special chars: <>&"';
+      const markdown =
+        '# Hello World\n\nThis is **bold** text with emojis 🚀 & special chars: <>&"';
       const dataUrl = createMarkdownDataUrl(markdown);
 
-      expect(dataUrl.startsWith('data:text/markdown;charset=utf-8,')).toBe(true);
+      expect(dataUrl.startsWith('data:text/markdown;charset=utf-8,')).toBe(
+        true,
+      );
       const encoded = dataUrl.replace('data:text/markdown;charset=utf-8,', '');
       expect(decodeURIComponent(encoded)).toBe(markdown);
     });
@@ -56,7 +61,8 @@ describe('Download Service (Feature 5, Milestone 2)', () => {
   describe('downloadMarkdown', () => {
     it('dispatches download with data URL and slugified filename', async () => {
       const downloadMock = vi.fn().mockResolvedValue(42);
-      browser.downloads.download = downloadMock as unknown as typeof browser.downloads.download;
+      browser.downloads.download =
+        downloadMock as unknown as typeof browser.downloads.download;
 
       const downloadId = await downloadMarkdown(
         '# Article Content',
@@ -73,13 +79,17 @@ describe('Download Service (Feature 5, Milestone 2)', () => {
 
     it('works with downloadMarkdownWithFrontmatter convenience helper', async () => {
       const downloadMock = vi.fn().mockResolvedValue(99);
-      browser.downloads.download = downloadMock as unknown as typeof browser.downloads.download;
+      browser.downloads.download =
+        downloadMock as unknown as typeof browser.downloads.download;
 
-      const downloadId = await downloadMarkdownWithFrontmatter('Article body text', {
-        title: 'Frontmatter Article',
-        source: 'https://example.com/frontmatter',
-        clipped_at: '2026-09-20T12:00:00.000Z',
-      });
+      const downloadId = await downloadMarkdownWithFrontmatter(
+        'Article body text',
+        {
+          title: 'Frontmatter Article',
+          source: 'https://example.com/frontmatter',
+          clipped_at: '2026-09-20T12:00:00.000Z',
+        },
+      );
 
       expect(downloadId).toBe(99);
       expect(downloadMock).toHaveBeenCalledWith(

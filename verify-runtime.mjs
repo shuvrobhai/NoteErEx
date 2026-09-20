@@ -31,6 +31,23 @@ async function run() {
   const extensionId = background.url().split('/')[2];
   console.log('Extension ID:', extensionId);
 
+  const registeredCommands = await background.evaluate(async () => {
+    return await globalThis.chrome.commands.getAll();
+  });
+  console.log('Registered commands:', registeredCommands);
+  const clipCmd = registeredCommands.find((c) => c.name === 'clip-to-markdown');
+  if (!clipCmd) {
+    throw new Error(
+      'Command clip-to-markdown was not found in chrome.commands.getAll()',
+    );
+  }
+  console.log(
+    'Verified registered command:',
+    clipCmd.name,
+    'shortcut:',
+    clipCmd.shortcut || '(unassigned/platform default)',
+  );
+
   const page = await context.newPage();
   const popupUrl = `chrome-extension://${extensionId}/popup.html`;
   console.log('Navigating to popup:', popupUrl);
@@ -48,15 +65,24 @@ async function run() {
   console.log('Updated button state after click:', updatedText);
 
   // Test state switcher buttons
-  const clippingStateBtn = page.getByRole('button', { name: 'clipping', exact: true });
+  const clippingStateBtn = page.getByRole('button', {
+    name: 'clipping',
+    exact: true,
+  });
   await clippingStateBtn.click();
   console.log('Tested clipping state button');
 
-  const successStateBtn = page.getByRole('button', { name: 'success', exact: true });
+  const successStateBtn = page.getByRole('button', {
+    name: 'success',
+    exact: true,
+  });
   await successStateBtn.click();
   console.log('Tested success state button');
 
-  const errorStateBtn = page.getByRole('button', { name: 'error', exact: true });
+  const errorStateBtn = page.getByRole('button', {
+    name: 'error',
+    exact: true,
+  });
   await errorStateBtn.click();
   console.log('Tested error state button');
 
@@ -101,8 +127,18 @@ async function run() {
     container.appendChild(fragment);
 
     // Sanitize
-    const unsafeTags = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'LINK']);
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT);
+    const unsafeTags = new Set([
+      'SCRIPT',
+      'STYLE',
+      'IFRAME',
+      'OBJECT',
+      'EMBED',
+      'LINK',
+    ]);
+    const walker = document.createTreeWalker(
+      container,
+      NodeFilter.SHOW_ELEMENT,
+    );
     const toRemove = [];
     let cur = walker.currentNode;
     while (cur) {
@@ -124,10 +160,19 @@ async function run() {
   });
 
   console.log('Live DOM selection result:', selectionResult);
-  if (!selectionResult.hasSelection || selectionResult.hasScript || !selectionResult.hasStrong || !selectionResult.hasLink) {
-    throw new Error('Selection extraction verification failed in live browser!');
+  if (
+    !selectionResult.hasSelection ||
+    selectionResult.hasScript ||
+    !selectionResult.hasStrong ||
+    !selectionResult.hasLink
+  ) {
+    throw new Error(
+      'Selection extraction verification failed in live browser!',
+    );
   }
-  console.log('Live DOM selection verified successfully: sanitized, formatted, intact!');
+  console.log(
+    'Live DOM selection verified successfully: sanitized, formatted, intact!',
+  );
 
   await context.close();
   fs.rmSync(userDataDir, { recursive: true, force: true });

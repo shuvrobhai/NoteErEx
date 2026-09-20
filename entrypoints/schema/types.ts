@@ -22,6 +22,34 @@ export interface ExtractedSelectionPayload {
   selectionText: string;
   selectionHtml: string;
   wordCount: number;
+  hasSelection?: boolean;
+}
+
+export interface ExtractedArticle {
+  title: string;
+  byline?: string;
+  excerpt?: string;
+  content: string;
+  textContent: string;
+  length: number;
+  siteName?: string;
+  url: string;
+  error?: string;
+}
+
+export interface ActiveTabSelection {
+  hasSelection: boolean;
+  text: string;
+  html: string;
+  wordCount: number;
+}
+
+export interface ActiveTab {
+  id?: number;
+  url?: string;
+  title?: string;
+  favIconUrl?: string;
+  active?: boolean;
 }
 
 export interface UserPreferences {
@@ -47,7 +75,8 @@ export interface ConversionOptions {
 }
 
 export interface ClipError {
-  code: 'extractionError' | 'conversionError' | 'downloadError' | 'storageError';
+  code:
+    'extractionError' | 'conversionError' | 'downloadError' | 'storageError';
   stage: 'extract' | 'convert' | 'download' | 'storage';
   message: string;
   url: string;

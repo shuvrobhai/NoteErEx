@@ -8,7 +8,9 @@ import { extractArticleWithReadability } from '../entrypoints/readability-runner
 describe('Extractor Service (Feature 5, Milestone 1)', () => {
   describe('isSupportedUrl', () => {
     it('allows standard https and http web URLs', () => {
-      expect(isSupportedUrl('https://developer.chrome.com/docs/extensions')).toBe(true);
+      expect(
+        isSupportedUrl('https://developer.chrome.com/docs/extensions'),
+      ).toBe(true);
       expect(isSupportedUrl('http://example.com/blog/my-post')).toBe(true);
     });
 
@@ -23,17 +25,25 @@ describe('Extractor Service (Feature 5, Milestone 1)', () => {
       expect(isSupportedUrl('chrome://settings')).toBe(false);
       expect(isSupportedUrl('edge://settings')).toBe(false);
       expect(isSupportedUrl('about:blank')).toBe(false);
-      expect(isSupportedUrl('chrome-extension://abc123xyz/popup.html')).toBe(false);
-      expect(isSupportedUrl('devtools://devtools/bundled/inspector.html')).toBe(false);
+      expect(isSupportedUrl('chrome-extension://abc123xyz/popup.html')).toBe(
+        false,
+      );
+      expect(isSupportedUrl('devtools://devtools/bundled/inspector.html')).toBe(
+        false,
+      );
       expect(isSupportedUrl('view-source:https://example.com')).toBe(false);
     });
 
     it('rejects Chrome Web Store URLs', () => {
       expect(
-        isSupportedUrl('https://chromewebstore.google.com/detail/my-extension/123'),
+        isSupportedUrl(
+          'https://chromewebstore.google.com/detail/my-extension/123',
+        ),
       ).toBe(false);
       expect(
-        isSupportedUrl('https://chrome.google.com/webstore/detail/my-extension/123'),
+        isSupportedUrl(
+          'https://chrome.google.com/webstore/detail/my-extension/123',
+        ),
       ).toBe(false);
     });
   });
@@ -90,7 +100,10 @@ describe('Extractor Service (Feature 5, Milestone 1)', () => {
         </article>
       `;
 
-      const result = extractArticleWithReadability(doc, 'https://example.com/great-tools');
+      const result = extractArticleWithReadability(
+        doc,
+        'https://example.com/great-tools',
+      );
 
       expect(result.title).toBe('How to Build Great Tools');
       expect(result.url).toBe('https://example.com/great-tools');
@@ -104,7 +117,10 @@ describe('Extractor Service (Feature 5, Milestone 1)', () => {
       doc.title = 'Minimal Page';
       doc.body.innerHTML = '<div>Just a small snippet.</div>';
 
-      const result = extractArticleWithReadability(doc, 'https://example.com/minimal');
+      const result = extractArticleWithReadability(
+        doc,
+        'https://example.com/minimal',
+      );
 
       expect(result.title).toBe('Minimal Page');
       expect(result.url).toBe('https://example.com/minimal');

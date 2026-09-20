@@ -5,7 +5,7 @@ export function createClipError(
   stage: ClipError['stage'],
   message: string,
   url: string,
-  details?: unknown
+  details?: unknown,
 ): ClipError {
   return {
     code,

@@ -23,28 +23,50 @@ export function extractArticleWithReadability(
 
     const title =
       article?.title?.trim() ||
-      doc.querySelector('meta[property="og:title"]')?.getAttribute('content')?.trim() ||
+      doc
+        .querySelector('meta[property="og:title"]')
+        ?.getAttribute('content')
+        ?.trim() ||
       doc.title?.trim() ||
       'Untitled Article';
 
     const byline =
       article?.byline?.trim() ||
-      doc.querySelector('meta[name="author"]')?.getAttribute('content')?.trim() ||
-      doc.querySelector('meta[property="article:author"]')?.getAttribute('content')?.trim() ||
+      doc
+        .querySelector('meta[name="author"]')
+        ?.getAttribute('content')
+        ?.trim() ||
+      doc
+        .querySelector('meta[property="article:author"]')
+        ?.getAttribute('content')
+        ?.trim() ||
       undefined;
 
     const excerpt =
       article?.excerpt?.trim() ||
-      doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() ||
-      doc.querySelector('meta[property="og:description"]')?.getAttribute('content')?.trim() ||
+      doc
+        .querySelector('meta[name="description"]')
+        ?.getAttribute('content')
+        ?.trim() ||
+      doc
+        .querySelector('meta[property="og:description"]')
+        ?.getAttribute('content')
+        ?.trim() ||
       undefined;
 
     const content = article?.content || doc.body?.innerHTML || '';
-    const textContent = article?.textContent || doc.body?.innerText || doc.body?.textContent || '';
+    const textContent =
+      article?.textContent ||
+      doc.body?.innerText ||
+      doc.body?.textContent ||
+      '';
     const length = article?.length || textContent.length;
     const siteName =
       article?.siteName?.trim() ||
-      doc.querySelector('meta[property="og:site_name"]')?.getAttribute('content')?.trim() ||
+      doc
+        .querySelector('meta[property="og:site_name"]')
+        ?.getAttribute('content')
+        ?.trim() ||
       undefined;
 
     return {
@@ -64,7 +86,8 @@ export function extractArticleWithReadability(
       textContent: doc.body?.innerText || doc.body?.textContent || '',
       length: 0,
       url,
-      error: error instanceof Error ? error.message : 'Readability parsing failed',
+      error:
+        error instanceof Error ? error.message : 'Readability parsing failed',
     };
   }
 }

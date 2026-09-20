@@ -6,12 +6,17 @@ import {
   extractSelectionFromTab,
   isSupportedUrl,
 } from '../entrypoints/popup/services/extractor';
-import { buildFrontmatter, serializeFrontmatter } from '../entrypoints/schema/frontmatter';
+import {
+  buildFrontmatter,
+  serializeFrontmatter,
+} from '../entrypoints/schema/frontmatter';
 import { slugifyTitle } from '../entrypoints/schema/download';
 import { PagePreviewCard } from '../entrypoints/popup/components/PagePreviewCard';
 import type { PageMetadataPreview } from '../entrypoints/popup/types';
 
-(globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+(
+  globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }
+).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe('Selected Text Clipping (Feature 6)', () => {
   describe('isSupportedUrl', () => {
@@ -20,8 +25,12 @@ describe('Selected Text Clipping (Feature 6)', () => {
       expect(isSupportedUrl('chrome://settings')).toBe(false);
       expect(isSupportedUrl('edge://settings')).toBe(false);
       expect(isSupportedUrl('about:blank')).toBe(false);
-      expect(isSupportedUrl('chrome-extension://abc123/popup.html')).toBe(false);
-      expect(isSupportedUrl('devtools://devtools/bundled/inspector.html')).toBe(false);
+      expect(isSupportedUrl('chrome-extension://abc123/popup.html')).toBe(
+        false,
+      );
+      expect(isSupportedUrl('devtools://devtools/bundled/inspector.html')).toBe(
+        false,
+      );
       expect(isSupportedUrl('view-source:https://example.com')).toBe(false);
     });
 
@@ -80,7 +89,8 @@ describe('Selected Text Clipping (Feature 6)', () => {
       const mockRange = {
         cloneContents: () => {
           const div = document.createElement('div');
-          div.innerHTML = '<p>Safe</p><script>alert(1)</script><style>.x{}</style><iframe src="x"></iframe><object data="y"></object>';
+          div.innerHTML =
+            '<p>Safe</p><script>alert(1)</script><style>.x{}</style><iframe src="x"></iframe><object data="y"></object>';
           return div;
         },
       };
@@ -102,7 +112,8 @@ describe('Selected Text Clipping (Feature 6)', () => {
       const mockRange = {
         cloneContents: () => {
           const div = document.createElement('div');
-          div.innerHTML = '<p onclick="alert(1)">Safe</p><span onmouseover="x">hover</span>';
+          div.innerHTML =
+            '<p onclick="alert(1)">Safe</p><span onmouseover="x">hover</span>';
           return div;
         },
       };
@@ -148,17 +159,23 @@ describe('Selected Text Clipping (Feature 6)', () => {
 
     it('throws when tab id is missing', async () => {
       const tab = { url: 'https://example.com' };
-      await expect(extractSelectionFromTab(tab)).rejects.toThrow('Active browser tab ID is missing.');
+      await expect(extractSelectionFromTab(tab)).rejects.toThrow(
+        'Active browser tab ID is missing.',
+      );
     });
   });
 
   describe('buildFrontmatter with type highlight', () => {
     it('generates frontmatter with required type highlight', () => {
-      const frontmatter = buildFrontmatter('Test title', 'https://example.com', {
-        author: 'Author',
-        wordCount: 100,
-        type: 'highlight',
-      });
+      const frontmatter = buildFrontmatter(
+        'Test title',
+        'https://example.com',
+        {
+          author: 'Author',
+          wordCount: 100,
+          type: 'highlight',
+        },
+      );
 
       expect(frontmatter.title).toBe('Test title');
       expect(frontmatter.source).toBe('https://example.com');
@@ -183,7 +200,9 @@ describe('Selected Text Clipping (Feature 6)', () => {
 
   describe('slugifyTitle with highlight suffix', () => {
     it('generates {slug}-highlight.md filename', () => {
-      expect(slugifyTitle('My Article', { suffix: 'highlight' })).toBe('my-article-highlight.md');
+      expect(slugifyTitle('My Article', { suffix: 'highlight' })).toBe(
+        'my-article-highlight.md',
+      );
     });
 
     it('falls back to suffix.md for empty title', () => {
@@ -228,7 +247,7 @@ describe('Selected Text Clipping (Feature 6)', () => {
               wordCount: 42,
               snippet: 'Selected text snippet...',
             }}
-          />
+          />,
         );
       });
 

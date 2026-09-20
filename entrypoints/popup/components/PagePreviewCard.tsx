@@ -10,7 +10,10 @@ interface PagePreviewCardProps {
   };
 }
 
-export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata, selection }) => {
+export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({
+  metadata,
+  selection,
+}) => {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 shadow-2xs dark:border-slate-800 dark:bg-slate-800/40">
       <div className="mb-1.5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -108,25 +111,26 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata, sele
           </span>
         )}
 
-        {typeof metadata.readingTime === 'number' && metadata.readingTime > 0 && (
-          <span className="inline-flex items-center gap-1 rounded-md bg-indigo-50 px-2 py-0.5 font-medium text-indigo-700 border border-indigo-200/60 dark:bg-indigo-950/40 dark:border-indigo-800/60 dark:text-indigo-300">
-            <svg
-              className="h-3 w-3 text-indigo-500 dark:text-indigo-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>{metadata.readingTime} min read</span>
-          </span>
-        )}
+        {typeof metadata.readingTime === 'number' &&
+          metadata.readingTime > 0 && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-indigo-50 px-2 py-0.5 font-medium text-indigo-700 border border-indigo-200/60 dark:bg-indigo-950/40 dark:border-indigo-800/60 dark:text-indigo-300">
+              <svg
+                className="h-3 w-3 text-indigo-500 dark:text-indigo-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{metadata.readingTime} min read</span>
+            </span>
+          )}
       </div>
     </div>
   );

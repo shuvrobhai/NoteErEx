@@ -60,6 +60,4 @@ export type ExtensionMessage =
     };
 
 export type ExtensionResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: string };
-
+  { success: true; data: T } | { success: false; error: string };

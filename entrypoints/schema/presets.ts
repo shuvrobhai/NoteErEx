@@ -8,7 +8,7 @@ export function normalizeHostname(hostname: string): string {
 export function matchPreset(
   tabUrl: string,
   presets: Record<string, Preset>,
-  defaultPreset: Preset
+  defaultPreset: Preset,
 ): Preset {
   let hostname: string;
   try {
@@ -46,7 +46,7 @@ export interface MergedConfig {
 
 export function mergeConfig(
   preferences?: Partial<UserPreferences> | null,
-  preset?: Partial<Preset> | null
+  preset?: Partial<Preset> | null,
 ): MergedConfig {
   return {
     frontmatterFields:
@@ -69,7 +69,8 @@ export async function applyPreset(tabUrl: string): Promise<{
   preset: Preset;
   config: MergedConfig;
 }> {
-  const { getPreferences, getPresets, getDefaultPreset } = await import('./storage');
+  const { getPreferences, getPresets, getDefaultPreset } =
+    await import('./storage');
   const preferences = await getPreferences();
   const presets = await getPresets();
   const defaultPreset = await getDefaultPreset();

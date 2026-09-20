@@ -92,7 +92,7 @@ Entrypoints under `entrypoints/`:
 - **Unit tests**: Vitest with `happy-dom` environment (`tests/` directory)
 - **Browser tests**: Playwright AXI for automated extension testing
 - **Runtime verification**: `node verify-runtime.mjs` launches Chromium with the built extension loaded and tests popup interaction
-- Test files: `tests/popup.test.tsx`, `tests/download-loop.test.tsx`, `tests/download.test.ts`, `tests/extractor.test.ts`, `tests/sample.test.ts`
+- Test files: `tests/popup.test.tsx`, `tests/download-loop.test.tsx`, `tests/download.test.ts`, `tests/extractor.test.ts`, `tests/selection.test.tsx`, `tests/shortcut.test.ts`, `tests/sample.test.ts`
 
 ## Tooling
 

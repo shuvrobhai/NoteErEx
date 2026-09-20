@@ -39,9 +39,12 @@ export async function migrateStorage(): Promise<void> {
     STORAGE_KEYS.defaultPreset,
   ]);
 
-  const preferences = result[STORAGE_KEYS.preferences] as UserPreferences | undefined;
-  const defaultPreset = result[STORAGE_KEYS.defaultPreset] as Preset | undefined;
-  const presets = result[STORAGE_KEYS.presets] as Record<string, Preset> | undefined;
+  const preferences = result[STORAGE_KEYS.preferences] as
+    UserPreferences | undefined;
+  const defaultPreset = result[STORAGE_KEYS.defaultPreset] as
+    Preset | undefined;
+  const presets = result[STORAGE_KEYS.presets] as
+    Record<string, Preset> | undefined;
 
   if (preferences && preferences.schemaVersion < CURRENT_SCHEMA_VERSION) {
     const migrated = {
@@ -88,10 +91,21 @@ export function validatePreferences(data: unknown): UserPreferences {
   if (!data || typeof data !== 'object') return { ...DEFAULT_PREFERENCES };
   const prefs = data as Record<string, unknown>;
   return {
-    frontmatterFields: Array.isArray(prefs.frontmatterFields) ? prefs.frontmatterFields : DEFAULT_PREFERENCES.frontmatterFields,
-    imageHandling: prefs.imageHandling === 'preserve' ? 'preserve' : DEFAULT_PREFERENCES.imageHandling,
-    notificationEnabled: typeof prefs.notificationEnabled === 'boolean' ? prefs.notificationEnabled : DEFAULT_PREFERENCES.notificationEnabled,
-    schemaVersion: typeof prefs.schemaVersion === 'number' ? prefs.schemaVersion : CURRENT_SCHEMA_VERSION,
+    frontmatterFields: Array.isArray(prefs.frontmatterFields)
+      ? prefs.frontmatterFields
+      : DEFAULT_PREFERENCES.frontmatterFields,
+    imageHandling:
+      prefs.imageHandling === 'preserve'
+        ? 'preserve'
+        : DEFAULT_PREFERENCES.imageHandling,
+    notificationEnabled:
+      typeof prefs.notificationEnabled === 'boolean'
+        ? prefs.notificationEnabled
+        : DEFAULT_PREFERENCES.notificationEnabled,
+    schemaVersion:
+      typeof prefs.schemaVersion === 'number'
+        ? prefs.schemaVersion
+        : CURRENT_SCHEMA_VERSION,
   };
 }
 
@@ -100,11 +114,24 @@ export function validatePreset(data: unknown): Preset {
   const preset = data as Record<string, unknown>;
   return {
     name: typeof preset.name === 'string' ? preset.name : DEFAULT_PRESET.name,
-    frontmatterFields: Array.isArray(preset.frontmatterFields) ? preset.frontmatterFields : DEFAULT_PRESET.frontmatterFields,
-    imageHandling: preset.imageHandling === 'preserve' ? 'preserve' : DEFAULT_PRESET.imageHandling,
-    destinations: Array.isArray(preset.destinations) ? preset.destinations : DEFAULT_PRESET.destinations,
-    notificationEnabled: typeof preset.notificationEnabled === 'boolean' ? preset.notificationEnabled : DEFAULT_PRESET.notificationEnabled,
-    schemaVersion: typeof preset.schemaVersion === 'number' ? preset.schemaVersion : CURRENT_SCHEMA_VERSION,
+    frontmatterFields: Array.isArray(preset.frontmatterFields)
+      ? preset.frontmatterFields
+      : DEFAULT_PRESET.frontmatterFields,
+    imageHandling:
+      preset.imageHandling === 'preserve'
+        ? 'preserve'
+        : DEFAULT_PRESET.imageHandling,
+    destinations: Array.isArray(preset.destinations)
+      ? preset.destinations
+      : DEFAULT_PRESET.destinations,
+    notificationEnabled:
+      typeof preset.notificationEnabled === 'boolean'
+        ? preset.notificationEnabled
+        : DEFAULT_PRESET.notificationEnabled,
+    schemaVersion:
+      typeof preset.schemaVersion === 'number'
+        ? preset.schemaVersion
+        : CURRENT_SCHEMA_VERSION,
   };
 }
 
@@ -115,7 +142,8 @@ export async function getPreferences(): Promise<UserPreferences> {
 
 export async function getPresets(): Promise<Record<string, Preset>> {
   const result = await browser.storage.local.get(STORAGE_KEYS.presets);
-  const presets = result[STORAGE_KEYS.presets] as Record<string, Preset> | undefined;
+  const presets = result[STORAGE_KEYS.presets] as
+    Record<string, Preset> | undefined;
   if (!presets) return {};
   const validated: Record<string, Preset> = {};
   for (const [key, value] of Object.entries(presets)) {

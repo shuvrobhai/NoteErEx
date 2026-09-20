@@ -3,7 +3,9 @@ import { gfm } from 'turndown-plugin-gfm';
 import type { ConversionOptions } from './types';
 import { CONVERSION_OPTIONS } from './constants';
 
-export function buildTurndownConfig(imageHandling: 'strip' | 'preserve'): TurndownService {
+export function buildTurndownConfig(
+  imageHandling: 'strip' | 'preserve',
+): TurndownService {
   const turndown = new TurndownService({
     bulletListMarker: CONVERSION_OPTIONS.bulletListMarker,
     codeBlockStyle: 'fenced',
@@ -32,4 +34,3 @@ export function convertHtmlToMarkdown(
 export function getConversionOptions(): ConversionOptions {
   return { ...CONVERSION_OPTIONS };
 }
-

@@ -8,7 +8,9 @@ import { StatusFeedback } from '../entrypoints/popup/components/StatusFeedback';
 import { App } from '../entrypoints/popup/App';
 
 // Inform React 19 of act test environment
-(globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+(
+  globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }
+).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe('Popup UI Foundation (Feature 4)', () => {
   let container: HTMLDivElement;
@@ -44,7 +46,9 @@ describe('Popup UI Foundation (Feature 4)', () => {
     expect(container.textContent).toContain('v1.2.0');
     expect(container.textContent).toContain('GitHub');
 
-    const settingsBtn = container.querySelector('button[aria-label="Extension Settings"]');
+    const settingsBtn = container.querySelector(
+      'button[aria-label="Extension Settings"]',
+    );
     expect(settingsBtn).not.toBeNull();
     settingsBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     expect(onOpenSettings).toHaveBeenCalledTimes(1);
@@ -67,7 +71,9 @@ describe('Popup UI Foundation (Feature 4)', () => {
       );
     });
 
-    expect(container.textContent).toContain('Exploring Web Components and Micro Frontends');
+    expect(container.textContent).toContain(
+      'Exploring Web Components and Micro Frontends',
+    );
     expect(container.textContent).toContain('web.dev');
     expect(container.textContent).toContain('Jane Doe');
     expect(container.textContent).toContain('Sep 20, 2026');
@@ -79,9 +85,7 @@ describe('Popup UI Foundation (Feature 4)', () => {
     const onClick = vi.fn();
 
     await act(async () => {
-      root.render(
-        <ActionButton onClick={onClick} label="Download Markdown" />,
-      );
+      root.render(<ActionButton onClick={onClick} label="Download Markdown" />);
     });
 
     const button = container.querySelector('button');
@@ -156,7 +160,9 @@ describe('Popup UI Foundation (Feature 4)', () => {
       );
     });
     expect(container.textContent).toContain('Failed:');
-    expect(container.textContent).toContain('Network timeout while fetching content.');
+    expect(container.textContent).toContain(
+      'Network timeout while fetching content.',
+    );
 
     const retryBtn = container.querySelector('button');
     expect(retryBtn?.textContent).toContain('Retry');
@@ -177,7 +183,9 @@ describe('Popup UI Foundation (Feature 4)', () => {
     expect(container.textContent).toContain('Ready to convert');
 
     // Click Download Markdown
-    const downloadBtn = container.querySelector('footer button') as HTMLButtonElement;
+    const downloadBtn = container.querySelector(
+      'footer button',
+    ) as HTMLButtonElement;
     await act(async () => {
       downloadBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
@@ -193,7 +201,9 @@ describe('Popup UI Foundation (Feature 4)', () => {
 
     // State should now be success
     expect(container.textContent).toContain('Saved!');
-    expect(container.textContent).toContain('how-to-build-accessible-modern-chrome-extensions.md');
+    expect(container.textContent).toContain(
+      'how-to-build-accessible-modern-chrome-extensions.md',
+    );
 
     vi.useRealTimers();
   });

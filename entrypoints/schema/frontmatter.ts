@@ -32,7 +32,7 @@ export function buildFrontmatter(
     wordCount?: number;
     enabledFields?: string[];
     type?: 'highlight' | 'article';
-  } = {}
+  } = {},
 ): MarkdownFrontmatter {
   const isEnabled = (field: string) =>
     !options.enabledFields || options.enabledFields.includes(field);
@@ -52,9 +52,14 @@ export function buildFrontmatter(
     if (normalized) frontmatter.published = normalized;
   }
 
-  if (isEnabled('description') && options.description && options.description.trim()) {
+  if (
+    isEnabled('description') &&
+    options.description &&
+    options.description.trim()
+  ) {
     const trimmed = options.description.trim();
-    frontmatter.description = trimmed.length > 200 ? trimmed.slice(0, 200) : trimmed;
+    frontmatter.description =
+      trimmed.length > 200 ? trimmed.slice(0, 200) : trimmed;
   }
 
   if (
@@ -66,7 +71,10 @@ export function buildFrontmatter(
       frontmatter.word_count = options.wordCount;
     }
     if (isEnabled('reading_time')) {
-      frontmatter.reading_time = Math.max(1, Math.ceil(options.wordCount / 200));
+      frontmatter.reading_time = Math.max(
+        1,
+        Math.ceil(options.wordCount / 200),
+      );
     }
   }
 

@@ -4,7 +4,13 @@ import { Header } from './components/Header';
 import { PagePreviewCard } from './components/PagePreviewCard';
 import { StatusFeedback } from './components/StatusFeedback';
 import { ActionButton } from './components/ActionButton';
-import type { PageMetadataPreview, PopupState, PopupStatus, ExtensionResponse, ActiveTabSelection } from './types';
+import type {
+  PageMetadataPreview,
+  PopupState,
+  PopupStatus,
+  ExtensionResponse,
+  ActiveTabSelection,
+} from './types';
 import {
   getActiveTab,
   extractPreviewFromTab,
@@ -19,7 +25,8 @@ import { slugifyTitle } from '../schema/download';
 import type { HighlightMarkdownFrontmatter } from '../schema/types';
 
 const INITIAL_METADATA: PageMetadataPreview = {
-  title: 'How to Build Accessible and High-Performance Modern Chrome Extensions',
+  title:
+    'How to Build Accessible and High-Performance Modern Chrome Extensions',
   domain: 'developer.chrome.com',
   author: 'Chrome DevRel',
   date: 'Sep 20, 2026',
@@ -82,7 +89,8 @@ export const App: React.FC = () => {
                   wordCount: selectionResult.wordCount,
                   snippet:
                     selectionResult.text.length > SNIPPET_MAX
-                      ? selectionResult.text.slice(0, SNIPPET_MAX).trim() + '...'
+                      ? selectionResult.text.slice(0, SNIPPET_MAX).trim() +
+                        '...'
                       : selectionResult.text,
                 }
               : undefined,
@@ -101,7 +109,11 @@ export const App: React.FC = () => {
   }, []);
 
   const handleClip = async () => {
-    setState((prev) => ({ ...prev, status: 'clipping', errorMessage: undefined }));
+    setState((prev) => ({
+      ...prev,
+      status: 'clipping',
+      errorMessage: undefined,
+    }));
 
     try {
       const tab = await getActiveTab();
@@ -110,7 +122,8 @@ export const App: React.FC = () => {
           setState((prev) => ({
             ...prev,
             status: 'success',
-            successFilename: 'how-to-build-accessible-modern-chrome-extensions.md',
+            successFilename:
+              'how-to-build-accessible-modern-chrome-extensions.md',
           }));
         }, 1200);
         return;
@@ -138,9 +151,13 @@ export const App: React.FC = () => {
         ) as HighlightMarkdownFrontmatter;
 
         const frontmatterStr = serializeFrontmatter(frontmatter);
-        const markdownBody = convertHtmlToMarkdown(selectionPayload.selectionHtml);
+        const markdownBody = convertHtmlToMarkdown(
+          selectionPayload.selectionHtml,
+        );
         const fullMarkdown = frontmatterStr + markdownBody;
-        const filename = slugifyTitle(frontmatter.title || 'clipping', { suffix: 'highlight' });
+        const filename = slugifyTitle(frontmatter.title || 'clipping', {
+          suffix: 'highlight',
+        });
 
         if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
           const response = (await browser.runtime.sendMessage({
@@ -150,7 +167,9 @@ export const App: React.FC = () => {
           })) as ExtensionResponse<{ downloadId: number }>;
 
           if (response && !response.success) {
-            throw new Error(response.error || 'Download failed in background worker.');
+            throw new Error(
+              response.error || 'Download failed in background worker.',
+            );
           }
         }
 
@@ -175,7 +194,9 @@ export const App: React.FC = () => {
       );
 
       const frontmatterStr = serializeFrontmatter(frontmatter);
-      const markdownBody = convertHtmlToMarkdown(article.content || article.textContent || '');
+      const markdownBody = convertHtmlToMarkdown(
+        article.content || article.textContent || '',
+      );
       const fullMarkdown = frontmatterStr + markdownBody;
       const filename = slugifyTitle(frontmatter.title || 'clipping');
 
@@ -187,7 +208,9 @@ export const App: React.FC = () => {
         })) as ExtensionResponse<{ downloadId: number }>;
 
         if (response && !response.success) {
-          throw new Error(response.error || 'Download failed in background worker.');
+          throw new Error(
+            response.error || 'Download failed in background worker.',
+          );
         }
       }
 
@@ -200,7 +223,8 @@ export const App: React.FC = () => {
       setState((prev) => ({
         ...prev,
         status: 'error',
-        errorMessage: err instanceof Error ? err.message : 'Failed to clip article',
+        errorMessage:
+          err instanceof Error ? err.message : 'Failed to clip article',
       }));
     }
   };
@@ -250,7 +274,10 @@ export const App: React.FC = () => {
         />
 
         <main className="flex flex-col gap-3.5 p-4">
-          <PagePreviewCard metadata={state.metadata} selection={state.selection} />
+          <PagePreviewCard
+            metadata={state.metadata}
+            selection={state.selection}
+          />
 
           <StatusFeedback
             status={state.status}

@@ -1,7 +1,10 @@
 import { serializeFrontmatter } from './frontmatter';
 import type { MarkdownFrontmatter } from './types';
 
-export function slugifyTitle(title: string, options?: { suffix?: string }): string {
+export function slugifyTitle(
+  title: string,
+  options?: { suffix?: string },
+): string {
   if (!title || typeof title !== 'string') {
     const suffix = options?.suffix ? `-${options.suffix}` : '';
     const base = suffix.replace(/^-/, '');

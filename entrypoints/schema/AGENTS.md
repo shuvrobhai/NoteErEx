@@ -12,6 +12,7 @@ Context for the extension data schemas, storage management, frontmatter generati
 - `conversion.ts`: Turndown configuration factory with GitHub Flavored Markdown (`turndown-plugin-gfm`), image handling rules (`strip` vs `preserve`), and `convertHtmlToMarkdown` helper.
 - `errors.ts`: Structured error payloads (`ClipError`) and failure dispatching with browser notification and action badge fallback.
 - `download.ts`: Slugified filename generation (`slugifyTitle`), self contained UTF-8 data URLs (`createMarkdownDataUrl`), and download dispatch (`downloadMarkdown`).
+- `extractor.ts`: Shared extraction service, URL validation (`isSupportedUrl`), and Readability runner execution.
 
 ## Conventions
 

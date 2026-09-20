@@ -1,7 +1,7 @@
 # 0006. Keyboard shortcut trigger
 
 **Date**: 2026-09-20
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 
