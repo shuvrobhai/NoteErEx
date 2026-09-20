@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Extension schema and settings | Foundation | done |
-| 4 | Popup UI foundation | Foundation | planned |
+| 4 | Popup UI foundation | Foundation | in-progress |
 | 5 | Core markdown download loop | Slice 1 | planned |
 | 6 | Selected text clipping | Slice 2 | planned |
 | 7 | Keyboard shortcut trigger | Slice 3 | planned |
@@ -48,10 +48,16 @@ spec [0002](../specs/0002-extension-schema-and-settings.md) · code in `entrypoi
   - [x] Milestone 4: Error handling and download — error handler, Blob/object URL download, YAML escaping, satisfies **AC-6**
 - [x] Verify it: `/check verify extension schema and settings`
 
-### 4. Popup UI foundation · needs a decision
+### 4. Popup UI foundation
 Visual styling, popup container, layout tokens, and status feedback components.
+spec [0003](../specs/0003-popup-ui-foundation.md) · code in `entrypoints/popup/`
 **Done when:** the popup shell renders with clear typography, status badges, and action button states.
-- [ ] Design it (spec): `/architect popup UI foundation`
+- [x] Design it (spec): `/architect popup UI foundation`
+- [ ] Build it: `/develop popup UI foundation`
+  - [ ] Milestone 1: Design tokens and container layout — Tailwind base setup and container dimensions, satisfies **AC-1**, **AC-6**
+  - [ ] Milestone 2: Header and preview card — branding, preset badge, and metadata chips, satisfies **AC-2**, **AC-3**
+  - [ ] Milestone 3: Interactive controls and feedback — action button and status alert states, satisfies **AC-4**, **AC-5**
+- [ ] Verify it: `/check verify popup UI foundation`
 
 ## Slice 1: Core markdown download loop
 
