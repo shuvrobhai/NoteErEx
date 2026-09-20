@@ -79,6 +79,8 @@ Out of scope for the current build pass, kept so the plan stays honest.
 - **Custom template options**: editable frontmatter and filename patterns in an options page · needs a decision
 - **Note app URI integration**: send markdown directly to Obsidian or similar tools via URI protocols · needs a decision
 - **Image assets archive**: download embedded images and package with markdown in a zip archive · needs a decision
+- **Multi-destination export**: export markdown directly to multiple configured targets · needs a decision
+- **Preset editor UI**: options page interface to manage site specific presets · needs a decision
 
 ## Legend
 
