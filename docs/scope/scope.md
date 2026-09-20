@@ -18,6 +18,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 5 | Core markdown download loop | Slice 1 | done |
 | 6 | Selected text clipping | Slice 2 | done |
 | 7 | Keyboard shortcut trigger | Slice 3 | done |
+| 8 | Multi-destination dispatch engine | Slice 4 | in-progress |
 
 ## Foundations
 
@@ -102,12 +103,27 @@ spec [0006](../specs/0006-keyboard-shortcut-trigger.md) · code in `entrypoints/
 - [x] Verify it: `/check verify keyboard shortcut trigger`
 - [x] Test it: `/test keyboard shortcut trigger`
 
+## Slice 4: Multi-destination dispatch engine
+
+### 8. Multi-destination dispatch engine
+Normalize active tab content into a canonical intermediate representation, manage provider adapters, and route clips to local files and Obsidian vaults.
+spec [0007](../specs/0007-multi-destination-dispatch-engine.md) · code in `entrypoints/schema/`, `entrypoints/background.ts`
+**Done when:** clicking clip can dispatch to local download and Obsidian simultaneously, isolating individual adapter failures.
+- [x] Design it (spec): `/architect multi-destination dispatch engine`
+- [x] Build it: `/develop multi-destination dispatch engine`
+  - [x] Milestone 1: Canonical IR and Zod provider settings schemas, satisfies **AC-1**, **AC-2**
+  - [x] Milestone 2: DispatchEngine with concurrent Promise.allSettled failure isolation, satisfies **AC-3**
+  - [x] Milestone 3: LocalDownloadAdapter and ObsidianAdapter with URI length guard, satisfies **AC-4**, **AC-5**, **AC-6**
+  - [x] Milestone 4: Background and popup dispatch integration with unit test suite, satisfies **AC-3**, **AC-7**
+- [ ] Verify it: `/check verify multi-destination dispatch engine`
+- [ ] Test it: `/test multi-destination dispatch engine`
+
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
 - **Custom template options**: editable frontmatter and filename patterns in an options page · needs a decision
-- **Note app URI integration**: send markdown directly to Obsidian or similar tools via URI protocols · needs a decision
+- **Notion and Google Docs adapters**: block converter and Drive REST export · deferred to Slice 5
+- **Apple Notes and Pages adapters**: rich text clipboard and native bridge · deferred to Slice 6
 - **Image assets archive**: download embedded images and package with markdown in a zip archive · needs a decision
-- **Multi-destination export**: export markdown directly to multiple configured targets · needs a decision
 - **Preset editor UI**: options page interface to manage site specific presets · needs a decision
 
 ## Legend

@@ -1,7 +1,19 @@
 import type { PageMetadataPreview } from '../schema/extractor';
 import type { ExtractedArticle, ActiveTabSelection } from '../schema/types';
+import type {
+  CanonicalNotePayload,
+  DispatchResult,
+  ProviderId,
+} from '../schema/provider';
 
-export type { PageMetadataPreview, ExtractedArticle, ActiveTabSelection };
+export type {
+  PageMetadataPreview,
+  ExtractedArticle,
+  ActiveTabSelection,
+  CanonicalNotePayload,
+  DispatchResult,
+  ProviderId,
+};
 
 export type PopupStatus = 'idle' | 'clipping' | 'success' | 'error';
 
@@ -33,6 +45,11 @@ export type ExtensionMessage =
       type: 'DOWNLOAD_MARKDOWN';
       filename: string;
       content: string;
+    }
+  | {
+      type: 'DISPATCH_CANONICAL';
+      providerIds: readonly ProviderId[];
+      payload: CanonicalNotePayload;
     };
 
 export type ExtensionResponse<T> =

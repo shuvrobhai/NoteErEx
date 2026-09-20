@@ -10,6 +10,13 @@ import {
 } from './schema/extractor';
 import type { ActiveTab, ExtractedSelectionPayload } from './schema/types';
 import type { ExtensionMessage, ExtensionResponse } from './popup/types';
+import { DispatchEngine } from './schema/dispatchEngine';
+import { LocalDownloadAdapter } from './schema/adapters/localAdapter';
+import { ObsidianAdapter } from './schema/adapters/obsidianAdapter';
+
+export const defaultDispatchEngine = new DispatchEngine();
+defaultDispatchEngine.register(new LocalDownloadAdapter());
+defaultDispatchEngine.register(new ObsidianAdapter());
 
 export interface CommandClipResult {
   success: boolean;
@@ -130,6 +137,22 @@ export default defineBackground(() => {
           });
         return true; // Keep message channel open for async response
       }
+
+      if (msg?.type === 'DISPATCH_CANONICAL') {
+        defaultDispatchEngine
+          .dispatchToAll(msg.providerIds, msg.payload)
+          .then((results) => {
+            sendResponse({ success: true, data: { results } });
+          })
+          .catch((error) => {
+            sendResponse({
+              success: false,
+              error: error instanceof Error ? error.message : 'Dispatch failed',
+            });
+          });
+        return true;
+      }
+
       return false;
     },
   );
@@ -242,3 +265,24 @@ export type {
   ExtractedSelectionPayload,
 } from './schema/types';
 export type { ExtensionMessage, ExtensionResponse } from './popup/types';
+export { DispatchEngine } from './schema/dispatchEngine';
+export { LocalDownloadAdapter } from './schema/adapters/localAdapter';
+export { ObsidianAdapter } from './schema/adapters/obsidianAdapter';
+export { createCanonicalPayload } from './schema/provider';
+export {
+  getProviderSettings,
+  saveProviderSettings,
+  ObsidianSettingsSchema,
+  RootProviderSettingsSchema,
+} from './schema/providerSettings';
+export type {
+  CanonicalMetadata,
+  CanonicalNotePayload,
+  ProviderId,
+  DispatchResult,
+  ProviderAdapter,
+} from './schema/provider';
+export type {
+  ProviderSettings,
+  ObsidianSettings,
+} from './schema/providerSettings';
