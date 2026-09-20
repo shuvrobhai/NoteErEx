@@ -24,8 +24,8 @@ web-ext.config.ts
 *.njsproj
 *.sln
 *.sw?
-.kilo
-.agents
+.kilo*
+.agent*
 skills-lock.json
 plans/
 docs/research/
