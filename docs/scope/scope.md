@@ -53,10 +53,10 @@ Visual styling, popup container, layout tokens, and status feedback components.
 spec [0003](../specs/0003-popup-ui-foundation.md) · code in `entrypoints/popup/`
 **Done when:** the popup shell renders with clear typography, status badges, and action button states.
 - [x] Design it (spec): `/architect popup UI foundation`
-- [ ] Build it: `/develop popup UI foundation`
-  - [ ] Milestone 1: Design tokens and container layout — Tailwind base setup and container dimensions, satisfies **AC-1**, **AC-6**
-  - [ ] Milestone 2: Header and preview card — branding, preset badge, and metadata chips, satisfies **AC-2**, **AC-3**
-  - [ ] Milestone 3: Interactive controls and feedback — action button and status alert states, satisfies **AC-4**, **AC-5**
+- [x] Build it: `/develop popup UI foundation`
+  - [x] Milestone 1: Design tokens and container layout — Tailwind base setup and container dimensions, satisfies **AC-1**, **AC-6**
+  - [x] Milestone 2: Header and preview card — branding, preset badge, and metadata chips, satisfies **AC-2**, **AC-3**
+  - [x] Milestone 3: Interactive controls and feedback — action button and status alert states, satisfies **AC-4**, **AC-5**
 - [ ] Verify it: `/check verify popup UI foundation`
 
 ## Slice 1: Core markdown download loop
