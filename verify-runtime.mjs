@@ -5,7 +5,7 @@ import fs from 'node:fs';
 async function run() {
   const extensionPath = path.resolve('.output/chrome-mv3');
   const userDataDir = path.resolve('.temp-playwright-user-data');
-  
+
   if (fs.existsSync(userDataDir)) {
     fs.rmSync(userDataDir, { recursive: true, force: true });
   }
@@ -22,7 +22,9 @@ async function run() {
 
   let [background] = context.serviceWorkers();
   if (!background) {
-    background = await context.waitForEvent('serviceworker', { timeout: 10000 });
+    background = await context.waitForEvent('serviceworker', {
+      timeout: 10000,
+    });
   }
 
   console.log('Service worker loaded at:', background.url());

@@ -13,6 +13,11 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
@@ -23,14 +28,24 @@
     "turndown-plugin-gfm": "1.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@tailwindcss/vite": "4.3.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/turndown": "5.0.6",
     "@wxt-dev/module-react": "^1.1.5",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.12.0",
+    "happy-dom": "20.14.5",
     "playwright": "1.63.0",
+    "prettier": "3.9.8",
     "tailwindcss": "4.3.3",
     "typescript": "^5.9.3",
+    "typescript-eslint": "8.70.0",
+    "vitest": "5.0.1",
     "web-ext": "^10.5.0",
     "wxt": "^0.21.3"
   }

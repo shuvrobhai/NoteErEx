@@ -12,7 +12,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
 | 1 | Stack and architecture | Foundation | in-progress |
-| 2 | Coding standards and tooling | Foundation | planned |
+| 2 | Coding standards and tooling | Foundation | in-progress |
 | 3 | Extension schema and settings | Foundation | planned |
 | 4 | Popup UI foundation | Foundation | planned |
 | 5 | Core markdown download loop | Slice 1 | planned |
@@ -33,7 +33,7 @@ spec [0001](../specs/0001-extension-stack-and-architecture.md) · code in `entry
 Capture code standards, directory conventions, and linting rules into root AGENTS.md, then install tooling.
 **Done when:** root `AGENTS.md` reflects the extension stack, and lint and type checks run clean.
 - [x] Capture conventions and tooling choices: `/audit`
-- [ ] Install tooling and hooks: `/develop tooling`
+- [x] Install tooling and hooks: `/develop tooling`
 
 ### 3. Extension schema and settings · needs a decision
 Define storage keys, frontmatter metadata layout, and conversion options schemas.
