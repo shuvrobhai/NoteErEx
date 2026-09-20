@@ -15,7 +15,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Extension schema and settings | Foundation | done |
 | 4 | Popup UI foundation | Foundation | done |
-| 5 | Core markdown download loop | Slice 1 | planned |
+| 5 | Core markdown download loop | Slice 1 | in-progress |
 | 6 | Selected text clipping | Slice 2 | planned |
 | 7 | Keyboard shortcut trigger | Slice 3 | planned |
 
@@ -61,10 +61,17 @@ spec [0003](../specs/0003-popup-ui-foundation.md) · code in `entrypoints/popup/
 
 ## Slice 1: Core markdown download loop
 
-### 5. Core markdown download loop · needs a decision
+### 5. Core markdown download loop
 Extract readable content from the active tab, generate markdown with YAML frontmatter, and trigger file download via Chrome downloads. This slice is the walking skeleton.
+spec [0004](../specs/0004-core-markdown-download-loop.md) · code in `entrypoints/`, `tests/`
 **Done when:** clicking the download button in the popup converts the active page to clean markdown with frontmatter and saves the file to disk.
-- [ ] Design it (spec): `/architect core markdown download loop`
+- [x] Design it (spec): `/architect core markdown download loop`
+- [ ] Build it: `/develop core markdown download loop`
+  - [ ] Milestone 1: Extraction service and URL guards — isSupportedUrl, preview extraction, and Readability injection runner, satisfies **AC-1**, **AC-2**, **AC-6**
+  - [ ] Milestone 2: Download handler and data URL dispatch — background listener, slugifyTitle, and manifest permissions, satisfies **AC-5**
+  - [ ] Milestone 3: Popup UI integration and pipeline wiring — live active tab extraction and action button binding, satisfies **AC-1**, **AC-2**, **AC-3**, **AC-4**, **AC-5**
+- [ ] Verify it: `/check verify core markdown download loop`
+- [ ] Test it: `/test core markdown download loop`
 
 ## Slice 2: Selected text clipping
 
