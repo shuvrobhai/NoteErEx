@@ -23,10 +23,10 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ### 1. Stack and architecture
 Decide the Manifest V3 architecture, bundler setup, and HTML to markdown libraries, then scaffold the runnable project.
-spec [0001](../specs/0001-extension-stack-and-architecture.md)
+spec [0001](../specs/0001-extension-stack-and-architecture.md) · code in `entrypoints/`, `wxt.config.ts`
 **Done when:** the stack is recorded in a spec and the extension loads without errors in Chrome developer mode.
 - [x] Decide the stack (spec): `/architect stack and architecture`
-- [ ] Scaffold from the decision: `/develop stack and architecture`
+- [x] Scaffold from the decision: `/develop stack and architecture`
 - [ ] Verify it: `/check verify stack and architecture`
 
 ### 2. Coding standards and tooling
