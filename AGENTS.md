@@ -73,5 +73,6 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Specs: [0001-extens
 ## Context files
 
 - [entrypoints/schema/AGENTS.md](entrypoints/schema/AGENTS.md): data schema, storage, frontmatter, presets, and conversion configuration
+- [entrypoints/popup/AGENTS.md](entrypoints/popup/AGENTS.md): popup UI architecture, components, layout constraints, styling rules, and state model
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
