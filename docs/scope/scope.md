@@ -15,8 +15,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Extension schema and settings | Foundation | done |
 | 4 | Popup UI foundation | Foundation | done |
-| 5 | Core markdown download loop | Slice 1 | in-progress |
-| 6 | Selected text clipping | Slice 2 | planned |
+| 5 | Core markdown download loop | Slice 1 | done |
+| 6 | Selected text clipping | Slice 2 | done |
 | 7 | Keyboard shortcut trigger | Slice 3 | planned |
 
 ## Foundations
@@ -71,7 +71,7 @@ spec [0004](../specs/0004-core-markdown-download-loop.md) · code in `entrypoint
   - [x] Milestone 2: Download handler and data URL dispatch — background listener, slugifyTitle, and manifest permissions, satisfies **AC-5**
   - [x] Milestone 3: Popup UI integration and pipeline wiring — live active tab extraction and action button binding, satisfies **AC-1**, **AC-2**, **AC-3**, **AC-4**, **AC-5**
 - [x] Verify it: `/check verify core markdown download loop`
-- [ ] Test it: `/test core markdown download loop`
+- [x] Test it: `/test core markdown download loop`
 
 ## Slice 2: Selected text clipping
 
@@ -80,12 +80,12 @@ Detect highlighted text on the active tab and convert only the selection to mark
 spec [0005](../specs/0005-selected-text-clipping.md) · code in `entrypoints/`, `tests/`
 **Done when:** selecting text on a page and clicking download exports only the selected passage with source metadata.
 - [x] Design it (spec): `/architect selected text clipping`
-- [ ] Build it: `/develop selected text clipping`
-  - [ ] Milestone 1: Selection detection service — extractDomSelection and active tab range cloning, satisfies **AC-1**, **AC-2**
-  - [ ] Milestone 2: Highlight frontmatter and conversion — type: highlight and Turndown selection processing, satisfies **AC-3**, **AC-4**
-  - [ ] Milestone 3: Popup UI adaptation and pipeline wiring — selection chip, excerpt snippet, button label, and fallback, satisfies **AC-1**, **AC-5**
-- [ ] Verify it: `/check verify selected text clipping`
-- [ ] Test it: `/test selected text clipping`
+- [x] Build it: `/develop selected text clipping`
+  - [x] Milestone 1: Selection detection service — extractDomSelection and active tab range cloning, satisfies **AC-1**, **AC-2**
+  - [x] Milestone 2: Highlight frontmatter and conversion — type: highlight and Turndown selection processing, satisfies **AC-3**, **AC-4**
+  - [x] Milestone 3: Popup UI adaptation and pipeline wiring — selection chip, excerpt snippet, button label, and fallback, satisfies **AC-1**, **AC-5**
+- [x] Verify it: `/check verify selected text clipping`
+- [x] Test it: `/test selected text clipping`
 
 ## Slice 3: Keyboard shortcut trigger
 

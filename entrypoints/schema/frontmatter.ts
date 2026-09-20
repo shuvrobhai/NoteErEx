@@ -31,6 +31,7 @@ export function buildFrontmatter(
     description?: string;
     wordCount?: number;
     enabledFields?: string[];
+    type?: 'highlight' | 'article';
   } = {}
 ): MarkdownFrontmatter {
   const isEnabled = (field: string) =>
@@ -67,6 +68,10 @@ export function buildFrontmatter(
     if (isEnabled('reading_time')) {
       frontmatter.reading_time = Math.max(1, Math.ceil(options.wordCount / 200));
     }
+  }
+
+  if (options.type) {
+    frontmatter.type = options.type;
   }
 
   return frontmatter;

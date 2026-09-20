@@ -3,9 +3,14 @@ import type { PageMetadataPreview } from '../types';
 
 interface PagePreviewCardProps {
   metadata: PageMetadataPreview;
+  selection?: {
+    hasSelection: boolean;
+    wordCount: number;
+    snippet: string;
+  };
 }
 
-export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata }) => {
+export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata, selection }) => {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 shadow-2xs dark:border-slate-800 dark:bg-slate-800/40">
       <div className="mb-1.5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -28,7 +33,9 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata }) =>
             {metadata.domain}
           </span>
         </div>
-        <span className="text-[11px] text-slate-400 dark:text-slate-500">Page preview</span>
+        <span className="text-[11px] text-slate-400 dark:text-slate-500">
+          {selection?.hasSelection ? 'Selection preview' : 'Page preview'}
+        </span>
       </div>
 
       <h2
@@ -37,6 +44,22 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata }) =>
       >
         {metadata.title}
       </h2>
+
+      {selection?.hasSelection && (
+        <div className="mb-2.5 rounded-lg border border-indigo-200/60 bg-indigo-50/60 p-2.5 text-xs text-indigo-900 dark:border-indigo-800/60 dark:bg-indigo-950/30 dark:text-indigo-200">
+          <div className="mb-1 flex items-center gap-1.5">
+            <span className="inline-flex items-center rounded-md bg-indigo-100 px-2 py-0.5 font-mono text-[11px] font-semibold text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300">
+              Selection
+            </span>
+            <span className="text-[11px] text-indigo-700 dark:text-indigo-300">
+              {selection.wordCount.toLocaleString()} words
+            </span>
+          </div>
+          <p className="line-clamp-2 text-indigo-800/90 dark:text-indigo-300/80">
+            {selection.snippet}
+          </p>
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
         {metadata.author && (
@@ -72,7 +95,7 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({ metadata }) =>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z"
               />
             </svg>
             <span>{metadata.date}</span>

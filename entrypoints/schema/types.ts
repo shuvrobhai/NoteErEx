@@ -7,6 +7,21 @@ export interface MarkdownFrontmatter {
   description?: string;
   word_count?: number;
   reading_time?: number;
+  type?: 'highlight' | 'article';
+}
+
+export interface HighlightMarkdownFrontmatter extends MarkdownFrontmatter {
+  type: 'highlight';
+}
+
+export interface ExtractedSelectionPayload {
+  title: string;
+  source: string;
+  author?: string;
+  date?: string;
+  selectionText: string;
+  selectionHtml: string;
+  wordCount: number;
 }
 
 export interface UserPreferences {

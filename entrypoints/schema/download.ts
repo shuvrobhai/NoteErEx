@@ -1,12 +1,15 @@
 import { serializeFrontmatter } from './frontmatter';
 import type { MarkdownFrontmatter } from './types';
 
-export function slugifyTitle(title: string): string {
+export function slugifyTitle(title: string, options?: { suffix?: string }): string {
   if (!title || typeof title !== 'string') {
-    return 'clipping.md';
+    const suffix = options?.suffix ? `-${options.suffix}` : '';
+    const base = suffix.replace(/^-/, '');
+    return `${base || 'clipping'}.md`;
   }
 
-  const sanitized = title
+  const suffix = options?.suffix ? `-${options.suffix}` : '';
+  const base = title
     .toLowerCase()
     .replace(/[/\\:*?"<>|]/g, '')
     .replace(/\s+/g, '-')
@@ -14,7 +17,8 @@ export function slugifyTitle(title: string): string {
     .replace(/^-|-$/g, '')
     .slice(0, 120);
 
-  return (sanitized || 'clipping') + '.md';
+  const sanitized = (base || 'clipping') + suffix;
+  return sanitized.endsWith('.md') ? sanitized : `${sanitized}.md`;
 }
 
 export function createMarkdownDataUrl(content: string): string {

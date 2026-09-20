@@ -51,5 +51,5 @@ export {
   createMarkdownDataUrl,
   downloadMarkdownWithFrontmatter,
 } from './schema/download';
-export type { MarkdownFrontmatter, UserPreferences, Preset, ConversionOptions, ClipError } from './schema/types';
+export type { MarkdownFrontmatter, HighlightMarkdownFrontmatter, UserPreferences, Preset, ConversionOptions, ClipError } from './schema/types';
 export type { ExtensionMessage, ExtensionResponse, ExtractedArticle } from './popup/types';

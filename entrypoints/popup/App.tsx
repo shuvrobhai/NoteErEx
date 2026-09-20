@@ -4,16 +4,19 @@ import { Header } from './components/Header';
 import { PagePreviewCard } from './components/PagePreviewCard';
 import { StatusFeedback } from './components/StatusFeedback';
 import { ActionButton } from './components/ActionButton';
-import type { PageMetadataPreview, PopupState, PopupStatus, ExtensionResponse } from './types';
+import type { PageMetadataPreview, PopupState, PopupStatus, ExtensionResponse, ActiveTabSelection } from './types';
 import {
   getActiveTab,
   extractPreviewFromTab,
   extractFullArticleFromTab,
+  extractSelectionFromTab,
+  extractDomSelection,
   isSupportedUrl,
 } from './services/extractor';
 import { buildFrontmatter, serializeFrontmatter } from '../schema/frontmatter';
 import { convertHtmlToMarkdown } from '../schema/conversion';
 import { slugifyTitle } from '../schema/download';
+import type { HighlightMarkdownFrontmatter } from '../schema/types';
 
 const INITIAL_METADATA: PageMetadataPreview = {
   title: 'How to Build Accessible and High-Performance Modern Chrome Extensions',
@@ -24,6 +27,8 @@ const INITIAL_METADATA: PageMetadataPreview = {
   readingTime: 6,
   presetName: 'Default',
 };
+
+const SNIPPET_MAX = 160;
 
 export const App: React.FC = () => {
   const [state, setState] = useState<PopupState>({
@@ -53,11 +58,34 @@ export const App: React.FC = () => {
           return;
         }
 
-        const preview = await extractPreviewFromTab(tab);
+        const [preview, selection] = await Promise.all([
+          extractPreviewFromTab(tab),
+          tab.id && browser.scripting?.executeScript
+            ? browser.scripting.executeScript({
+                target: { tabId: tab.id },
+                func: extractDomSelection,
+              })
+            : Promise.resolve<{ result: ActiveTabSelection }[]>([]),
+        ]);
+
+        const selectionResult = selection[0]?.result;
+
         if (isMounted) {
           setState((prev) => ({
             ...prev,
             metadata: preview,
+            selection: selectionResult?.hasSelection
+              ? {
+                  hasSelection: true,
+                  text: selectionResult.text,
+                  html: selectionResult.html,
+                  wordCount: selectionResult.wordCount,
+                  snippet:
+                    selectionResult.text.length > SNIPPET_MAX
+                      ? selectionResult.text.slice(0, SNIPPET_MAX).trim() + '...'
+                      : selectionResult.text,
+                }
+              : undefined,
           }));
         }
       } catch (err) {
@@ -78,7 +106,6 @@ export const App: React.FC = () => {
     try {
       const tab = await getActiveTab();
       if (!tab || !tab.url) {
-        // Fallback for simulation / test environments without an active tab
         setTimeout(() => {
           setState((prev) => ({
             ...prev,
@@ -93,6 +120,46 @@ export const App: React.FC = () => {
         throw new Error(
           'Clipping is not supported on internal browser pages or the Chrome Web Store.',
         );
+      }
+
+      const isSelectionMode = Boolean(state.selection?.hasSelection);
+
+      if (isSelectionMode) {
+        const selectionPayload = await extractSelectionFromTab(tab);
+        const frontmatter = buildFrontmatter(
+          selectionPayload.title,
+          selectionPayload.source,
+          {
+            author: state.metadata.author,
+            published: state.metadata.date,
+            wordCount: selectionPayload.wordCount,
+            type: 'highlight',
+          },
+        ) as HighlightMarkdownFrontmatter;
+
+        const frontmatterStr = serializeFrontmatter(frontmatter);
+        const markdownBody = convertHtmlToMarkdown(selectionPayload.selectionHtml);
+        const fullMarkdown = frontmatterStr + markdownBody;
+        const filename = slugifyTitle(frontmatter.title || 'clipping', { suffix: 'highlight' });
+
+        if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
+          const response = (await browser.runtime.sendMessage({
+            type: 'DOWNLOAD_MARKDOWN',
+            filename,
+            content: fullMarkdown,
+          })) as ExtensionResponse<{ downloadId: number }>;
+
+          if (response && !response.success) {
+            throw new Error(response.error || 'Download failed in background worker.');
+          }
+        }
+
+        setState((prev) => ({
+          ...prev,
+          status: 'success',
+          successFilename: filename,
+        }));
+        return;
       }
 
       const article = await extractFullArticleFromTab(tab);
@@ -171,6 +238,8 @@ export const App: React.FC = () => {
     }
   };
 
+  const isSelectionMode = Boolean(state.selection?.hasSelection);
+
   return (
     <div className="flex min-h-[400px] max-h-[520px] w-[380px] flex-col justify-between bg-white text-slate-900 select-none dark:bg-slate-900 dark:text-slate-100">
       <div>
@@ -181,7 +250,7 @@ export const App: React.FC = () => {
         />
 
         <main className="flex flex-col gap-3.5 p-4">
-          <PagePreviewCard metadata={state.metadata} />
+          <PagePreviewCard metadata={state.metadata} selection={state.selection} />
 
           <StatusFeedback
             status={state.status}
@@ -197,7 +266,7 @@ export const App: React.FC = () => {
           onClick={handleClip}
           isLoading={state.status === 'clipping'}
           disabled={state.status === 'clipping'}
-          label="Download Markdown"
+          label={isSelectionMode ? 'Download Selection' : 'Download Markdown'}
           loadingLabel="Clipping..."
         />
 

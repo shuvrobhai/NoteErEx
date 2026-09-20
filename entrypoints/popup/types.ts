@@ -15,6 +15,13 @@ export interface PopupState {
   metadata: PageMetadataPreview;
   errorMessage?: string;
   successFilename?: string;
+  selection?: {
+    hasSelection: boolean;
+    text: string;
+    html: string;
+    wordCount: number;
+    snippet: string;
+  };
 }
 
 export interface ExtractedArticle {
@@ -29,12 +36,22 @@ export interface ExtractedArticle {
   error?: string;
 }
 
+export interface ActiveTabSelection {
+  hasSelection: boolean;
+  text: string;
+  html: string;
+  wordCount: number;
+}
+
 export type ExtensionMessage =
   | {
       type: 'EXTRACT_PAGE_PREVIEW';
     }
   | {
       type: 'EXTRACT_FULL_ARTICLE';
+    }
+  | {
+      type: 'EXTRACT_DOM_SELECTION';
     }
   | {
       type: 'DOWNLOAD_MARKDOWN';
