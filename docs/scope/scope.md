@@ -77,8 +77,15 @@ spec [0004](../specs/0004-core-markdown-download-loop.md) · code in `entrypoint
 
 ### 6. Selected text clipping
 Detect highlighted text on the active tab and convert only the selection to markdown while keeping frontmatter.
+spec [0005](../specs/0005-selected-text-clipping.md) · code in `entrypoints/`, `tests/`
 **Done when:** selecting text on a page and clicking download exports only the selected passage with source metadata.
+- [x] Design it (spec): `/architect selected text clipping`
 - [ ] Build it: `/develop selected text clipping`
+  - [ ] Milestone 1: Selection detection service — extractDomSelection and active tab range cloning, satisfies **AC-1**, **AC-2**
+  - [ ] Milestone 2: Highlight frontmatter and conversion — type: highlight and Turndown selection processing, satisfies **AC-3**, **AC-4**
+  - [ ] Milestone 3: Popup UI adaptation and pipeline wiring — selection chip, excerpt snippet, button label, and fallback, satisfies **AC-1**, **AC-5**
+- [ ] Verify it: `/check verify selected text clipping`
+- [ ] Test it: `/test selected text clipping`
 
 ## Slice 3: Keyboard shortcut trigger
 
