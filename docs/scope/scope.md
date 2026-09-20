@@ -27,7 +27,7 @@ spec [0001](../specs/0001-extension-stack-and-architecture.md) · code in `entry
 **Done when:** the stack is recorded in a spec and the extension loads without errors in Chrome developer mode.
 - [x] Decide the stack (spec): `/architect stack and architecture`
 - [x] Scaffold from the decision: `/develop stack and architecture`
-- [ ] Verify it: `/check verify stack and architecture`
+- [x] Verify it: `/check verify stack and architecture`
 
 ### 2. Coding standards and tooling
 Capture code standards, directory conventions, and linting rules into root AGENTS.md, then install tooling.
