@@ -9,9 +9,9 @@ Context for the extension data schemas, storage management, frontmatter generati
 - `storage.ts`: Chrome storage initialization, schema migration preserving existing keys, runtime validation (`validatePreferences`, `validatePreset`), and getter helpers.
 - `frontmatter.ts`: Frontmatter construction with `enabledFields` filtering, URL filename and hostname fallback, ISO date normalization, and safe YAML serialization via `js-yaml`.
 - `presets.ts`: Domain normalization, case insensitive exact and dot boundary wildcard matching, and configuration precedence merging (`DEFAULT_PREFERENCES` → `preferences` → `preset`).
-- `conversion.ts`: Turndown configuration factory with GitHub Flavored Markdown (`turndown-plugin-gfm`) and image handling rule (`strip` removes images via rule, `preserve` keeps markdown syntax).
+- `conversion.ts`: Turndown configuration factory with GitHub Flavored Markdown (`turndown-plugin-gfm`), image handling rules (`strip` vs `preserve`), and `convertHtmlToMarkdown` helper.
 - `errors.ts`: Structured error payloads (`ClipError`) and failure dispatching with browser notification and action badge fallback.
-- `download.ts`: File export via Blob and object URL with automatic cleanup.
+- `download.ts`: Slugified filename generation (`slugifyTitle`), self contained UTF-8 data URLs (`createMarkdownDataUrl`), and download dispatch (`downloadMarkdown`).
 
 ## Conventions
 

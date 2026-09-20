@@ -16,8 +16,10 @@ The popup is the main user interface for the Web to Markdown extension. It rende
 | `entrypoints/popup/components/Header.tsx` | Branding, version badge, active preset chip, settings shortcut |
 | `entrypoints/popup/components/PagePreviewCard.tsx` | Title truncation, domain, metadata chips (author, date, words, reading time) |
 | `entrypoints/popup/components/ActionButton.tsx` | Primary action with idle, hover, active, loading, and disabled states |
-| `entrypoints/popup/components/StatusFeedback.tsx` | Accessible status banner with idle, clipping, success, and error states |
+| `entrypoints/popup/services/extractor.ts` | Active tab query, URL validation guards, preview and full article extraction |
+| `entrypoints/readability-runner.ts` | Injected unlisted runner executing Mozilla Readability inside tab DOM context |
 | `tests/popup.test.tsx` | Unit tests for all popup components and state transitions |
+| `tests/download-loop.test.tsx` | End-to-end integration tests for extraction, conversion, frontmatter, and download loop |
 
 ## Commands
 
@@ -35,14 +37,14 @@ The popup shares root commands. No popup-specific commands exist.
 - The state model uses `PopupStatus` union type: `'idle' | 'clipping' | 'success' | 'error'`.
 - Component state flows through `PopupState` which includes status, metadata, optional error message, and optional success filename.
 - The App component includes visual state preview switchers (idle, clipping, success, error) for testing and verification purposes.
+- Tab extraction runs on mount and downloads are delegated to the background worker via data URLs to prevent blob revocation on unmount.
 
 ## Gotchas
 
-- The popup unmounts immediately when the user clicks away. Avoid async operations that outlive the popup session.
+- The popup unmounts immediately when the user clicks away. Background downloads must be delegated to `entrypoints/background.ts` via data URLs.
 - `overflow-y` is not explicitly set on the body element in `style.css`. Content that exceeds 520 pixels could cause vertical scrollbars. Monitor this as more content is added.
 - `focus-visible:outline-hidden` is used on several buttons. Verify this is a valid Tailwind v4 class; if not, replace with `focus-visible:outline-none`.
-- The `handleRetry` function in App.tsx currently calls `handleClip` directly. This is a placeholder for the real retry logic that will be wired in Feature 5.
-- Mock data (`INITIAL_METADATA`) is used in App.tsx for preview testing. Real tab extraction will replace this in Feature 5.
+- Restricted URLs (`chrome://`, `edge://`, `about:`, Chrome Web Store) cannot be scripted and display friendly error banners with retry buttons.
 
 ## Agent skills
 
@@ -54,5 +56,6 @@ The popup shares root commands. No popup-specific commands exist.
 ## Related specs
 
 - [0003-popup-ui-foundation.md](../../docs/specs/0003-popup-ui-foundation.md): Popup UI foundation spec with acceptance criteria AC-1 through AC-6
+- [0004-core-markdown-download-loop.md](../../docs/specs/0004-core-markdown-download-loop.md): Core markdown download loop spec with acceptance criteria AC-1 through AC-6
 
 _drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
