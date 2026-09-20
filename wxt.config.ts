@@ -8,7 +8,7 @@ export default defineConfig({
     name: 'Web to Markdown',
     description:
       'Extract web page content to clean markdown with YAML frontmatter',
-    permissions: ['activeTab', 'scripting', 'downloads'],
+    permissions: ['activeTab', 'scripting', 'downloads', 'storage', 'notifications'],
   },
   vite: () => ({
     plugins: [tailwindcss()],

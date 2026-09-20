@@ -13,7 +13,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 |---|---------|-------|--------|
 | 1 | Stack and architecture | Foundation | in-progress |
 | 2 | Coding standards and tooling | Foundation | done |
-| 3 | Extension schema and settings | Foundation | in-progress |
+| 3 | Extension schema and settings | Foundation | done |
 | 4 | Popup UI foundation | Foundation | planned |
 | 5 | Core markdown download loop | Slice 1 | planned |
 | 6 | Selected text clipping | Slice 2 | planned |
@@ -39,14 +39,14 @@ Capture code standards, directory conventions, and linting rules into root `AGEN
 ### 3. Extension schema and settings
 Define storage keys, frontmatter metadata layout, and conversion options schemas.
 **Done when:** the data schema defines frontmatter fields, storage keys, and error payloads cleanly.
-spec [0002](../specs/0002-extension-schema-and-settings.md) · code in `entrypoints/`, `wxt.config.ts`
+spec [0002](../specs/0002-extension-schema-and-settings.md) · code in `entrypoints/schema/`, `wxt.config.ts`
 - [x] Design it (spec): `/architect extension schema and settings`
-- [ ] Build it: `/develop extension schema and settings`
-  - [ ] Milestone 1: Schema definition and storage setup — TypeScript interfaces, manifest permissions, storage constants and defaults, satisfies **AC-1**, **AC-7**, **AC-9**
-  - [ ] Milestone 2: Core pipeline — runtime initialization, validation, frontmatter builder, satisfies **AC-2**, **AC-3**, **AC-8**
-  - [ ] Milestone 3: Presets and images — domain matching, image handling toggle, satisfies **AC-4**, **AC-5**
-  - [ ] Milestone 4: Error handling and download — error handler, Blob/object URL download, YAML escaping, satisfies **AC-6**
-- [ ] Verify it: `/check verify extension schema and settings`
+- [x] Build it: `/develop extension schema and settings`
+  - [x] Milestone 1: Schema definition and storage setup — TypeScript interfaces, manifest permissions, storage constants and defaults, satisfies **AC-1**, **AC-7**, **AC-9**
+  - [x] Milestone 2: Core pipeline — runtime initialization, validation, frontmatter builder, satisfies **AC-2**, **AC-3**, **AC-8**
+  - [x] Milestone 3: Presets and images — domain matching, image handling toggle, satisfies **AC-4**, **AC-5**
+  - [x] Milestone 4: Error handling and download — error handler, Blob/object URL download, YAML escaping, satisfies **AC-6**
+- [x] Verify it: `/check verify extension schema and settings`
 
 ### 4. Popup UI foundation · needs a decision
 Visual styling, popup container, layout tokens, and status feedback components.

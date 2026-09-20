@@ -1,7 +1,7 @@
 # 0002. Extension schema and settings
 
 **Date**: 2026-09-20
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 
