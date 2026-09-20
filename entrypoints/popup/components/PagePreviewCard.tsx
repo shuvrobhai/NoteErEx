@@ -33,7 +33,7 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({
             />
           </svg>
           <span className="font-mono text-[11px] font-medium tracking-tight text-slate-600 dark:text-slate-300">
-            {metadata.domain}
+            {metadata.domain || 'Active tab'}
           </span>
         </div>
         <span className="text-[11px] text-slate-400 dark:text-slate-500">
@@ -43,9 +43,13 @@ export const PagePreviewCard: React.FC<PagePreviewCardProps> = ({
 
       <h2
         className="mb-2.5 line-clamp-2 text-sm font-medium leading-snug text-slate-900 dark:text-slate-100"
-        title={metadata.title}
+        title={metadata.title || 'Loading page details...'}
       >
-        {metadata.title}
+        {metadata.title || (
+          <span className="text-slate-400 italic dark:text-slate-500">
+            Detecting page title...
+          </span>
+        )}
       </h2>
 
       {selection?.hasSelection && (

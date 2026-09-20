@@ -209,11 +209,21 @@ export async function getActiveTab(): Promise<ActiveTab | null> {
   if (typeof browser === 'undefined' || !browser.tabs?.query) {
     return null;
   }
-  const tabs = (await browser.tabs.query({
+  const tabs = await browser.tabs.query({
     active: true,
     currentWindow: true,
-  })) as unknown as ActiveTab[];
-  return tabs[0] || null;
+  });
+  const tab = tabs[0];
+  if (!tab) {
+    return null;
+  }
+  return {
+    id: tab.id,
+    url: tab.url,
+    title: tab.title,
+    favIconUrl: tab.favIconUrl,
+    active: tab.active,
+  };
 }
 
 export async function extractPreviewFromTab(

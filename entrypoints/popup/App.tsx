@@ -25,13 +25,8 @@ import { formatMarkdownFilename } from '../schema/download';
 import type { HighlightMarkdownFrontmatter } from '../schema/types';
 
 const INITIAL_METADATA: PageMetadataPreview = {
-  title:
-    'How to Build Accessible and High-Performance Modern Chrome Extensions',
-  domain: 'developer.chrome.com',
-  author: 'Chrome DevRel',
-  date: 'Sep 20, 2026',
-  wordCount: 1420,
-  readingTime: 6,
+  title: '',
+  domain: '',
   presetName: 'Default',
 };
 
@@ -119,14 +114,11 @@ export const App: React.FC = () => {
     try {
       const tab = await getActiveTab();
       if (!tab || !tab.url) {
-        setTimeout(() => {
-          setState((prev) => ({
-            ...prev,
-            status: 'success',
-            successFilename:
-              'how-to-build-accessible-modern-chrome-extensions.md',
-          }));
-        }, 1200);
+        setState((prev) => ({
+          ...prev,
+          status: 'error',
+          errorMessage: 'No active browser tab found.',
+        }));
         return;
       }
 

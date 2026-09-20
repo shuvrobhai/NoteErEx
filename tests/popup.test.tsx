@@ -170,9 +170,7 @@ describe('Popup UI Foundation (Feature 4)', () => {
     expect(onRetry).toHaveBeenCalledTimes(1);
   });
 
-  it('renders App shell layout and handles simulated clipping transition (AC-1, AC-4, AC-5)', async () => {
-    vi.useFakeTimers();
-
+  it('renders App shell layout and reports error when no active tab is found (AC-1, AC-4, AC-5)', async () => {
     await act(async () => {
       root.render(<App />);
     });
@@ -190,21 +188,8 @@ describe('Popup UI Foundation (Feature 4)', () => {
       downloadBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
 
-    // Now state should be clipping
-    expect(container.textContent).toContain('Clipping...');
-    expect(container.textContent).toContain('Extracting article content');
-
-    // Advance timers for simulation
-    await act(async () => {
-      vi.advanceTimersByTime(1300);
-    });
-
-    // State should now be success
-    expect(container.textContent).toContain('Saved!');
-    expect(container.textContent).toContain(
-      'how-to-build-accessible-modern-chrome-extensions.md',
-    );
-
-    vi.useRealTimers();
+    // State should now report the error cleanly
+    expect(container.textContent).toContain('Failed:');
+    expect(container.textContent).toContain('No active browser tab found.');
   });
 });

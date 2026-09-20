@@ -31,16 +31,11 @@ export interface PopupState {
   };
 }
 
+/**
+ * Messages sent to the background service worker.
+ * Page DOM extractions are executed directly in the active tab context via browser.scripting.
+ */
 export type ExtensionMessage =
-  | {
-      type: 'EXTRACT_PAGE_PREVIEW';
-    }
-  | {
-      type: 'EXTRACT_FULL_ARTICLE';
-    }
-  | {
-      type: 'EXTRACT_DOM_SELECTION';
-    }
   | {
       type: 'DOWNLOAD_MARKDOWN';
       filename: string;

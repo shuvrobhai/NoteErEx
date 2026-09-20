@@ -237,7 +237,6 @@ export {
   convertHtmlToMarkdown,
 } from './schema/conversion';
 export { matchPreset, applyPreset, mergeConfig } from './schema/presets';
-export { createClipError, handleError } from './schema/errors';
 export {
   downloadMarkdown,
   formatMarkdownFilename,

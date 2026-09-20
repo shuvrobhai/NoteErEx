@@ -1,3 +1,5 @@
+import type { Preset } from './types';
+
 export const STORAGE_KEYS = {
   preferences: 'preferences',
   presets: 'presets',
@@ -19,7 +21,7 @@ export const DEFAULT_PREFERENCES = {
   schemaVersion: CURRENT_SCHEMA_VERSION,
 };
 
-export const DEFAULT_PRESET: import('./types').Preset = {
+export const DEFAULT_PRESET: Preset = {
   name: 'Default',
   frontmatterFields: [
     'author',

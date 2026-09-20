@@ -32,7 +32,8 @@ async function run() {
   console.log('Extension ID:', extensionId);
 
   const registeredCommands = await background.evaluate(async () => {
-    return await globalThis.chrome.commands.getAll();
+    const api = globalThis.browser?.commands || globalThis.chrome?.commands;
+    return await api.getAll();
   });
   console.log('Registered commands:', registeredCommands);
   const clipCmd = registeredCommands.find((c) => c.name === 'clip-to-markdown');

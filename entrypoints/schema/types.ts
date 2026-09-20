@@ -69,10 +69,10 @@ export interface Preset {
 }
 
 export interface ConversionOptions {
-  bulletListMarker: '-';
-  removeComments: true;
-  codeBlockLang?: true;
-  preserveCodeBlockLanguage?: true;
+  bulletListMarker: '-' | '*' | '+';
+  removeComments: boolean;
+  codeBlockLang?: boolean;
+  preserveCodeBlockLanguage?: boolean;
 }
 
 export interface ClipError {

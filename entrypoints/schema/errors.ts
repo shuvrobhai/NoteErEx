@@ -1,3 +1,4 @@
+import { browser } from 'wxt/browser';
 import type { ClipError } from './types';
 
 export function createClipError(
@@ -24,27 +25,36 @@ export async function handleError(error: ClipError): Promise<void> {
 
   if (preferences.notificationEnabled) {
     try {
-      await browser.notifications.create({
-        type: 'basic',
-        iconUrl: '/icons/icon-48.png',
-        title: 'NoteErEx Error',
-        message: error.message,
-        priority: 2,
-      });
-      return;
+      if (browser.notifications?.create) {
+        await browser.notifications.create({
+          type: 'basic',
+          iconUrl: '/icon/128.png',
+          title: 'NoteErEx Error',
+          message: error.message,
+          priority: 2,
+        });
+        return;
+      }
     } catch {
       // Notification permission denied or not available
     }
   }
 
   try {
-    await browser.action.setBadgeText({ text: '!' });
-    await browser.action.setBadgeBackgroundColor({ color: '#ff4444' });
-    setTimeout(async () => {
-      await browser.action.setBadgeText({ text: '' });
-    }, BADGE_CLEAR_DELAY_MS);
+    if (browser.action?.setBadgeText) {
+      await browser.action.setBadgeText({ text: '!' }).catch(() => {});
+      await browser.action
+        .setBadgeBackgroundColor({ color: '#ff4444' })
+        .catch(() => {});
+
+      if (typeof setTimeout === 'function') {
+        setTimeout(() => {
+          browser.action?.setBadgeText({ text: '' }).catch(() => {});
+        }, BADGE_CLEAR_DELAY_MS);
+      }
+    }
   } catch {
-    // Badge update failed
+    // Badge update failed gracefully
   }
 }
 
