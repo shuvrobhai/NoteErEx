@@ -1,7 +1,7 @@
 # 0001. Manifest V3 extension stack and architecture
 
 **Date**: 2026-09-20
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

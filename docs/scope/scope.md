@@ -11,7 +11,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
-| 1 | Stack and architecture | Foundation | in-progress |
+| 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Extension schema and settings | Foundation | done |
 | 4 | Popup UI foundation | Foundation | planned |

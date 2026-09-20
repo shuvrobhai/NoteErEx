@@ -5,7 +5,7 @@
 - **Language / Runtime**: TypeScript, Node 20+
 - **Framework**: WXT (Vite-based Manifest V3 framework)
 - **UI Framework**: React 19, Tailwind CSS
-- **Key dependencies**: @mozilla/readability, turndown, turndown-plugin-gfm
+- **Key dependencies**: @mozilla/readability, turndown, turndown-plugin-gfm, js-yaml
 - **Package manager**: pnpm (or npm)
 
 ## Build approach
@@ -43,7 +43,7 @@ pnpm run test
 
 ## Specs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Active: [0001-extension-stack-and-architecture.md](docs/specs/0001-extension-stack-and-architecture.md).
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Specs: [0001-extension-stack-and-architecture.md](docs/specs/0001-extension-stack-and-architecture.md), [0002-extension-schema-and-settings.md](docs/specs/0002-extension-schema-and-settings.md).
 
 ## Rules
 
@@ -72,6 +72,6 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`. Active: [0001-exten
 
 ## Context files
 
-<!-- Nested AGENTS.md files are listed here as they are created -->
+- [entrypoints/schema/AGENTS.md](entrypoints/schema/AGENTS.md): data schema, storage, frontmatter, presets, and conversion configuration
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
