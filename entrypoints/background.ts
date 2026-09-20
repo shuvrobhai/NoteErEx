@@ -1,18 +1,11 @@
 import { initializeStorage, migrateStorage } from './schema/storage';
-import { downloadMarkdown, formatMarkdownFilename } from './schema/download';
-import { buildFrontmatter, serializeFrontmatter } from './schema/frontmatter';
-import { convertHtmlToMarkdown } from './schema/conversion';
-import {
-  isSupportedUrl,
-  getActiveTab,
-  extractSelectionFromTab,
-  extractFullArticleFromTab,
-} from './schema/extractor';
-import type { ActiveTab, ExtractedSelectionPayload } from './schema/types';
+import { downloadMarkdown } from './schema/download';
+import type { ActiveTab } from './schema/types';
 import type { ExtensionMessage, ExtensionResponse } from './popup/types';
 import { DispatchEngine } from './schema/dispatchEngine';
 import { LocalDownloadAdapter } from './schema/adapters/localAdapter';
 import { ObsidianAdapter } from './schema/adapters/obsidianAdapter';
+import { executeClip } from './schema/clipPipeline';
 
 export const defaultDispatchEngine = new DispatchEngine();
 defaultDispatchEngine.register(new LocalDownloadAdapter());
@@ -27,82 +20,12 @@ export interface CommandClipResult {
 export async function handleCommandClip(
   tab?: ActiveTab,
 ): Promise<CommandClipResult> {
-  let targetTab = tab;
-  if (!targetTab || !targetTab.id) {
-    targetTab = (await getActiveTab()) || undefined;
-  }
-
-  if (!targetTab || !targetTab.id) {
-    throw new Error('No active browser tab found.');
-  }
-
-  const tabUrl = targetTab.url || '';
-  if (!isSupportedUrl(tabUrl)) {
-    throw new Error(
-      'Clipping is not supported on internal browser pages or the Chrome Web Store.',
-    );
-  }
-
-  let fullMarkdown: string;
-  let filename: string;
-
-  let selectionPayload: ExtractedSelectionPayload | null;
-  try {
-    selectionPayload = await extractSelectionFromTab(targetTab);
-  } catch {
-    selectionPayload = null;
-  }
-
-  const isSelectionMode = Boolean(
-    selectionPayload &&
-    selectionPayload.hasSelection &&
-    selectionPayload.selectionText.trim().length > 0,
-  );
-
-  if (isSelectionMode && selectionPayload) {
-    const frontmatter = buildFrontmatter(
-      selectionPayload.title,
-      selectionPayload.source,
-      {
-        author: selectionPayload.author,
-        published: selectionPayload.date,
-        wordCount: selectionPayload.wordCount,
-        type: 'highlight',
-      },
-    );
-    const frontmatterStr = serializeFrontmatter(frontmatter);
-    const markdownBody = convertHtmlToMarkdown(selectionPayload.selectionHtml);
-    fullMarkdown = frontmatterStr + markdownBody;
-    filename = formatMarkdownFilename(frontmatter.title || 'clipping', {
-      suffix: 'highlight',
-    });
-  } else {
-    const article = await extractFullArticleFromTab(targetTab);
-    const words = (article.textContent || '')
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-    const wordCount = words.length;
-
-    const frontmatter = buildFrontmatter(
-      article.title || targetTab.title || 'Web Article',
-      article.url || targetTab.url || '',
-      {
-        author: article.byline,
-        wordCount,
-        type: 'article',
-      },
-    );
-    const frontmatterStr = serializeFrontmatter(frontmatter);
-    const markdownBody = convertHtmlToMarkdown(
-      article.content || article.textContent || '',
-    );
-    fullMarkdown = frontmatterStr + markdownBody;
-    filename = formatMarkdownFilename(frontmatter.title || 'article');
-  }
-
-  const downloadId = await downloadMarkdown(fullMarkdown, filename);
-  return { success: true, filename, downloadId };
+  const result = await executeClip({ tab, downloadLocally: true });
+  return {
+    success: result.success,
+    filename: result.filename,
+    downloadId: result.downloadId ?? 0,
+  };
 }
 
 export default defineBackground(() => {
@@ -285,3 +208,9 @@ export type {
   ProviderSettings,
   ObsidianSettings,
 } from './schema/providerSettings';
+export { executeClip } from './schema/clipPipeline';
+export type {
+  ClipPipelineOptions,
+  ClipPipelineResult,
+} from './schema/clipPipeline';
+

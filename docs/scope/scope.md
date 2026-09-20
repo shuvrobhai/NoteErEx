@@ -17,8 +17,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Popup UI foundation | Foundation | done |
 | 5 | Core markdown download loop | Slice 1 | done |
 | 6 | Selected text clipping | Slice 2 | done |
-| 7 | Keyboard shortcut trigger | Slice 3 | done |
 | 8 | Multi-destination dispatch engine | Slice 4 | in-progress |
+| 9 | Clip pipeline and extractor deepening | Slice 4 | done |
 
 ## Foundations
 
@@ -117,6 +117,19 @@ spec [0007](../specs/0007-multi-destination-dispatch-engine.md) · code in `entr
   - [x] Milestone 4: Background and popup dispatch integration with unit test suite, satisfies **AC-3**, **AC-7**
 - [ ] Verify it: `/check verify multi-destination dispatch engine`
 - [ ] Test it: `/test multi-destination dispatch engine`
+
+### 9. Clip pipeline and extractor deepening
+Consolidate duplicated clipping orchestration and separate browser tab scripting from pure DOM parsing.
+spec [0008](../specs/0008-clip-pipeline-and-extractor-deepening.md) · code in `entrypoints/schema/`, `entrypoints/`, `tests/`
+**Done when:** pure DOM extraction runs without browser mocks and all clipping entry points invoke the unified ClipPipeline.
+- [x] Design it (spec): `/architect clip pipeline and extractor deepening`
+- [x] Build it: `/develop clip pipeline and extractor deepening`
+  - [x] Milestone 1: Pure DomExtractor and browser TabExtractor split, satisfies **AC-3**, **AC-4**, **AC-5**
+  - [x] Milestone 2: Unified ClipPipeline module, satisfies **AC-1**
+  - [x] Milestone 3: Background and popup orchestration wiring, satisfies **AC-2**
+  - [x] Milestone 4: DomExtractor and ClipPipeline test suites, satisfies **AC-6**, **AC-7**
+- [x] Verify it: `/check verify clip pipeline and extractor deepening`
+- [x] Review it: `/check review clip pipeline and extractor deepening`
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.

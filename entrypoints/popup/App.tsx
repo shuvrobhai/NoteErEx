@@ -8,21 +8,15 @@ import type {
   PageMetadataPreview,
   PopupState,
   PopupStatus,
-  ExtensionResponse,
   ActiveTabSelection,
 } from './types';
 import {
   getActiveTab,
   extractPreviewFromTab,
-  extractFullArticleFromTab,
-  extractSelectionFromTab,
   extractDomSelection,
   isSupportedUrl,
 } from './services/extractor';
-import { buildFrontmatter, serializeFrontmatter } from '../schema/frontmatter';
-import { convertHtmlToMarkdown } from '../schema/conversion';
-import { formatMarkdownFilename } from '../schema/download';
-import type { HighlightMarkdownFrontmatter } from '../schema/types';
+import { executeClip } from '../schema/clipPipeline';
 
 const INITIAL_METADATA: PageMetadataPreview = {
   title: '',
@@ -122,103 +116,17 @@ export const App: React.FC = () => {
         return;
       }
 
-      if (!isSupportedUrl(tab.url)) {
-        throw new Error(
-          'Clipping is not supported on internal browser pages or the Chrome Web Store.',
-        );
-      }
-
-      const isSelectionMode = Boolean(state.selection?.hasSelection);
-
-      if (isSelectionMode) {
-        const selectionPayload = await extractSelectionFromTab(tab);
-        const frontmatter = buildFrontmatter(
-          selectionPayload.title,
-          selectionPayload.source,
-          {
-            author: state.metadata.author,
-            published: state.metadata.date,
-            wordCount: selectionPayload.wordCount,
-            type: 'highlight',
-          },
-        ) as HighlightMarkdownFrontmatter;
-
-        const frontmatterStr = serializeFrontmatter(frontmatter);
-        const markdownBody = convertHtmlToMarkdown(
-          selectionPayload.selectionHtml,
-        );
-        const fullMarkdown = frontmatterStr + markdownBody;
-        const filename = formatMarkdownFilename(
-          frontmatter.title || 'clipping',
-          {
-            suffix: 'highlight',
-          },
-        );
-
-        if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
-          const response = (await browser.runtime.sendMessage({
-            type: 'DOWNLOAD_MARKDOWN',
-            filename,
-            content: fullMarkdown,
-          })) as ExtensionResponse<{ downloadId: number }>;
-
-          if (response && !response.success) {
-            throw new Error(
-              response.error || 'Download failed in background worker.',
-            );
-          }
-        }
-
-        setState((prev) => ({
-          ...prev,
-          status: 'success',
-          successFilename: filename,
-        }));
-        return;
-      }
-
-      const article = await extractFullArticleFromTab(tab);
-      const words = (article.textContent || '')
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean);
-      const wordCount = words.length || state.metadata.wordCount;
-      const frontmatter = buildFrontmatter(
-        article.title || tab.title || state.metadata.title,
-        tab.url,
-        {
-          author: article.byline || state.metadata.author,
-          published: state.metadata.date,
-          description: article.excerpt,
-          wordCount,
-        },
-      );
-
-      const frontmatterStr = serializeFrontmatter(frontmatter);
-      const markdownBody = convertHtmlToMarkdown(
-        article.content || article.textContent || '',
-      );
-      const fullMarkdown = frontmatterStr + markdownBody;
-      const filename = formatMarkdownFilename(frontmatter.title || 'clipping');
-
-      if (typeof browser !== 'undefined' && browser.runtime?.sendMessage) {
-        const response = (await browser.runtime.sendMessage({
-          type: 'DOWNLOAD_MARKDOWN',
-          filename,
-          content: fullMarkdown,
-        })) as ExtensionResponse<{ downloadId: number }>;
-
-        if (response && !response.success) {
-          throw new Error(
-            response.error || 'Download failed in background worker.',
-          );
-        }
-      }
+      const result = await executeClip({
+        tab,
+        preferredTitle: state.metadata.title,
+        preferredAuthor: state.metadata.author,
+        downloadLocally: true,
+      });
 
       setState((prev) => ({
         ...prev,
         status: 'success',
-        successFilename: filename,
+        successFilename: result.filename,
       }));
     } catch (err) {
       setState((prev) => ({
