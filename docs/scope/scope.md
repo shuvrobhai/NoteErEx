@@ -70,7 +70,7 @@ spec [0004](../specs/0004-core-markdown-download-loop.md) · code in `entrypoint
   - [x] Milestone 1: Extraction service and URL guards — isSupportedUrl, preview extraction, and Readability injection runner, satisfies **AC-1**, **AC-2**, **AC-6**
   - [x] Milestone 2: Download handler and data URL dispatch — background listener, slugifyTitle, and manifest permissions, satisfies **AC-5**
   - [x] Milestone 3: Popup UI integration and pipeline wiring — live active tab extraction and action button binding, satisfies **AC-1**, **AC-2**, **AC-3**, **AC-4**, **AC-5**
-- [ ] Verify it: `/check verify core markdown download loop`
+- [x] Verify it: `/check verify core markdown download loop`
 - [ ] Test it: `/test core markdown download loop`
 
 ## Slice 2: Selected text clipping
