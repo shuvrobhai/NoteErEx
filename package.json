@@ -16,14 +16,19 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@mozilla/readability": "0.6.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "turndown": "7.2.4",
+    "turndown-plugin-gfm": "1.0.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/turndown": "5.0.6",
     "@wxt-dev/module-react": "^1.1.5",
+    "playwright": "1.63.0",
     "tailwindcss": "4.3.3",
     "typescript": "^5.9.3",
     "web-ext": "^10.5.0",
