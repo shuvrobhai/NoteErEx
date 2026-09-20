@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Web to Markdown',
+    name: 'NoteErEx',
     description:
-      'Extract web page content to clean markdown with YAML frontmatter',
+      'NoteErEx (নোটের এক্সটেনশন) — Extract web page content to clean markdown with YAML frontmatter',
     permissions: [
       'activeTab',
       'scripting',

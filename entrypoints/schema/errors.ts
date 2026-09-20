@@ -27,7 +27,7 @@ export async function handleError(error: ClipError): Promise<void> {
       await browser.notifications.create({
         type: 'basic',
         iconUrl: '/icons/icon-48.png',
-        title: 'Web to Markdown Error',
+        title: 'NoteErEx Error',
         message: error.message,
         priority: 2,
       });

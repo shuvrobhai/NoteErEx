@@ -1,4 +1,4 @@
-# Web to Markdown Chrome Extension
+# NoteErEx (নোটের এক্সটেনশন) Chrome Extension
 
 ## Stack
 
@@ -19,7 +19,7 @@ Tracer Bullet (build vertical slices end to end through every layer so each slic
 - integration: on
 - branch prefix: feat/
 - commit: per-milestone
-- `.kilo/` is in `.gitignore` (agent workspace, not committed)
+- `.agents/` and `.kilo/` are in `.gitignore` (internal workspaces, not committed)
 
 ## Commands
 

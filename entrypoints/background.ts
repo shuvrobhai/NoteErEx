@@ -99,7 +99,7 @@ export async function handleCommandClip(
 }
 
 export default defineBackground(() => {
-  console.log('Web to Markdown background service worker started');
+  console.log('NoteErEx background service worker started');
 
   browser.runtime.onInstalled.addListener(async () => {
     await initializeStorage();

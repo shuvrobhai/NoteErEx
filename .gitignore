@@ -25,3 +25,8 @@ web-ext.config.ts
 *.sln
 *.sw?
 .kilo
+.agents
+skills-lock.json
+plans/
+docs/research/
+docs/guides/

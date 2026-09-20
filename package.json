@@ -1,6 +1,6 @@
 {
-  "name": "web-to-markdown",
-  "description": "Chrome extension to extract web page content to markdown with YAML frontmatter",
+  "name": "note-er-ex",
+  "description": "NoteErEx (নোটের এক্সটেনশন) — Chrome extension to extract web page content to markdown with YAML frontmatter",
   "private": true,
   "version": "0.1.0",
   "type": "module",

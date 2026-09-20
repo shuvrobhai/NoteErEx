@@ -4,12 +4,14 @@ interface HeaderProps {
   presetName: string;
   version?: string;
   onOpenSettings?: () => void;
+  title?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   presetName,
   version = 'v0.1.0',
   onOpenSettings,
+  title = 'NoteErEx',
 }) => {
   return (
     <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-800">
@@ -33,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div>
           <div className="flex items-center gap-1.5">
             <h1 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-              Web to Markdown
+              {title}
             </h1>
             <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
               {version}

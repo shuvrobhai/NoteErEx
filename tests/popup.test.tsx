@@ -42,7 +42,7 @@ describe('Popup UI Foundation (Feature 4)', () => {
       );
     });
 
-    expect(container.textContent).toContain('Web to Markdown');
+    expect(container.textContent).toContain('NoteErEx');
     expect(container.textContent).toContain('v1.2.0');
     expect(container.textContent).toContain('GitHub');
 
@@ -177,7 +177,7 @@ describe('Popup UI Foundation (Feature 4)', () => {
       root.render(<App />);
     });
 
-    expect(container.textContent).toContain('Web to Markdown');
+    expect(container.textContent).toContain('NoteErEx');
     expect(container.textContent).toContain('Default');
     expect(container.textContent).toContain('Download Markdown');
     expect(container.textContent).toContain('Ready to convert');
