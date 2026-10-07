@@ -1,172 +1,126 @@
 # NoteErEx (নোটের এক্সটেনশন)
 
-The universal browser extension for web capture and multi destination note dispatch. Save clean articles and highlighted passages directly into Obsidian, Notion, Google Docs, Apple Notes, Apple Pages, or local Markdown files with zero tracking.
+A Manifest V3 browser extension that extracts clean content from web pages and
+dispatches it to note-taking destinations. Save articles and highlighted
+passages as Markdown with YAML frontmatter — to disk, to Obsidian, or to both
+at once. No tracking, no external servers.
 
 ## What is NoteErEx
 
-The name NoteErEx comes from the Bengali phrase **নোটের এক্সটেনশন** (*Note Er Extension*). In Bengali grammar, *Not-er* (নোটের) translates to *of notes*. The name literally means **The Extension of Notes**, an open source companion created for anyone who collects knowledge across the web.
+The name comes from the Bengali phrase **নোটের এক্সটেনশন** (*Note Er
+Extension*). *Not-er* (নোটের) means *of notes*, so the name reads as **The
+Extension of Notes**.
 
-Most web clippers force you into a single proprietary app or capture cluttered web pages full of ads and trackers. NoteErEx is designed as a universal content pipeline. It extracts clean page content in your browser, creates an intermediate representation, and converts it into the exact structure required by your target knowledge base. Whether you need markdown with YAML frontmatter for Obsidian, structured blocks for Notion, or rich text for Apple Notes and Google Docs, NoteErEx delivers clean content to your preferred workspace.
-
-## System Architecture
-
-NoteErEx processes web content through a modular extraction and adapter pipeline:
-
-```text
-[ Web Page / Selection ]
-           │
-           ▼
-[ Mozilla Readability & DOM Extractor ]
-           │
-           ▼
-[ Normalized Intermediate Representation ]
-           │
- ┌─────────┼─────────┬──────────────┬──────────────┬─────────────┐
- │         │         │              │              │             │
- ▼         ▼         ▼              ▼              ▼             ▼
-Local   Obsidian   Notion     Google Docs    Apple Notes    Apple Pages
-(MD)     (URI)     (Blocks)      (REST)       (Rich Text)     (Docx/RTF)
- └─────────┴─────────┼──────────────┴──────────────┴─────────────┘
-                     ▼
-       [ Multi Destination Dispatcher ]
-    (Send to multiple targets simultaneously)
-```
+Most web clippers lock you into one app or dump cluttered HTML into your
+notes. NoteErEx extracts clean content in the browser, normalizes it into a
+canonical payload, and lets destination adapters format it for wherever you
+want it to land.
 
 ## Highlights
 
-- **Full article clipping**: Extracts headlines, author metadata, publication dates, and core body text using Mozilla Readability.
-- **Selected text clipping**: Highlight any text passage on a page to save just that excerpt, preserving source metadata and an excerpt tag.
-- **Keyboard shortcut trigger**: Press `Alt+Shift+C` (or `Option+Shift+C` on macOS) to clip immediately without opening the popup interface.
-- **Structured YAML frontmatter**: Generates title, source URL, author, published date, word count, and clip timestamps ready for Obsidian, Logseq, and static site generators.
-- **Multi destination vision**: Built to dispatch notes to multiple apps like Obsidian, Notion, Google Docs, and Apple Notes simultaneously.
-- **Privacy first**: Operates entirely client side with zero tracking, zero external telemetry, and no third party server dependencies.
-- **Adaptive design**: Compact popup interface built with Tailwind CSS that automatically respects your system light or dark theme.
+- **Full article clipping** — Mozilla Readability extracts body text, author,
+  date, and description. Turndown converts to GitHub Flavored Markdown.
+- **Selected text clipping** — highlight any passage and clip only that,
+  with `type: highlight` frontmatter and rich formatting (links, bold, code)
+  preserved.
+- **Keyboard shortcut** — `Ctrl+Shift+M` on Windows/Linux, `Command+Shift+M`
+  on macOS. Clips without opening the popup. Remappable in
+  `chrome://extensions/shortcuts`.
+- **Structured YAML frontmatter** — title, source, author, date, word count,
+  reading time. Optional fields are omitted when unavailable, never left empty.
+- **Multi-destination dispatch** — dispatch to local download and Obsidian in
+  one action. Individual adapter failures don't cancel other destinations.
+- **Privacy first** — all extraction and conversion happens locally. No
+  telemetry, no third-party servers, minimal permissions (`activeTab`,
+  `scripting`, `downloads`, `storage`, `notifications`).
+- **Dark mode** — popup adapts to system preference automatically.
 
-## Project Roadmap
-
-NoteErEx is developed in vertical milestones, expanding from a solid local markdown clipper into an omnichannel note dispatcher.
-
-### Phase 1: Local Foundation (Completed)
-- [x] Clean DOM extraction using Mozilla Readability in isolated tab contexts
-- [x] Selected text excerpt extraction with source metadata
-- [x] HTML to GitHub Flavored Markdown conversion via Turndown
-- [x] Structured YAML frontmatter generation with metadata sanitization
-- [x] Resilient background service worker download loop using data URLs
-- [x] Global keyboard shortcut trigger (`Alt+Shift+C` / `Option+Shift+C`)
-- [x] Compact popup user interface with dark mode and live tab previews
-- [x] End to end runtime verification with Vitest and Playwright
-
-### Phase 2: Obsidian Integration (In Progress)
-- [ ] Direct vault integration via Obsidian URI protocol (`obsidian://new`)
-- [ ] Configurable target vaults and folder paths
-- [ ] Wikilink formatting and internal linking options
-- [ ] Daily note appending mode for research snippets
-
-### Phase 3: Notion Workspace Exporter
-- [ ] Notion API client integration via OAuth or secure internal integration tokens
-- [ ] Conversion from intermediate representation into Notion block objects
-- [ ] Database page creation with automated property mapping for author, URL, and date
-- [ ] Workspace database selector in the extension settings
-
-### Phase 4: Google Docs and Apple Ecosystem
-- [ ] Google Docs REST API export with native document heading and list structures
-- [ ] Apple Notes integration using rich text clipboard and native URL schemes
-- [ ] Apple Pages export adapter for formatted document creation
-- [ ] Clean rich text formatting for standard clipboard paste operations
-
-### Phase 5: Multi Destination Parallel Dispatch
-- [ ] Simultaneous multi target export (save to a local Obsidian vault and a remote Notion database in one action)
-- [ ] Independent per destination status indicators and failure isolation
-- [ ] Batch retry support for transient network failures
-
-### Phase 6: Custom Preset Manager and Options Page
-- [ ] Dedicated extension options page for credential storage and default settings
-- [ ] Domain specific CSS selector presets to remove stubborn site clutter
-- [ ] Custom note templates using configurable token replacement
-
-## Tech Stack
-
-- **Framework**: WXT (Vite based Manifest V3 framework)
-- **UI library**: React 19
-- **Styling**: Tailwind CSS v4
-- **Parsing and conversion**: Mozilla Readability, Turndown, Turndown GFM, and js-yaml
-- **Package manager**: pnpm
-- **Testing**: Vitest with happy-dom and Playwright runtime verification
-
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
 - Node.js 20 or later
-- pnpm package manager (`npm install -g pnpm`)
+- pnpm (`npm install -g pnpm`)
 
-### Installation
+### Install
 
 ```bash
-# Clone the repository
 git clone https://github.com/shuvrobhai/NoteErEx.git
 cd NoteErEx
-
-# Install dependencies and generate extension types
 pnpm install
 ```
 
-### Development
+`postinstall` runs `wxt prepare` to generate extension types.
+
+### Develop
 
 ```bash
-# Start the local development server with Chrome hot reload
-pnpm run dev
-
-# Start development server for Firefox
-pnpm run dev:firefox
+pnpm run dev            # Chrome with HMR
+pnpm run dev:firefox    # Firefox
 ```
 
-### Building the Extension
+### Build and load
 
 ```bash
-# Build the production extension for Chrome
-pnpm run build
-
-# Package into a zip archive for distribution
-pnpm run zip
+pnpm run build          # outputs to .output/chrome-mv3
+pnpm run zip            # packaged archive for distribution
 ```
 
-The production build outputs to `.output/chrome-mv3`.
+To load in Chrome:
 
-### Loading into Chrome
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** (top left)
+4. Select `.output/chrome-mv3`
 
-1. Open Google Chrome and navigate to `chrome://extensions`.
-2. Toggle **Developer mode** in the top right corner.
-3. Click **Load unpacked** in the top left corner.
-4. Select the `.output/chrome-mv3` folder inside your project directory.
-5. NoteErEx is now installed and ready to use from your extensions toolbar.
-
-## Running Tests and Quality Checks
+### Test and check
 
 ```bash
-# Run unit and integration tests
-pnpm run test
-
-# Check TypeScript types
-pnpm run typecheck
-
-# Run linter checks
-pnpm run lint
-
-# Check code formatting
-pnpm run format:check
-
-# Run automated browser runtime verification
-node verify-runtime.mjs
+pnpm run test           # Vitest with happy-dom
+pnpm run typecheck      # tsc --noEmit
+pnpm run lint           # ESLint
+pnpm run format:check   # Prettier
+node verify-runtime.mjs # Playwright runtime check against the built extension
 ```
 
-## How It Works
+## How it works
 
-1. **Extraction**: When triggered, the extension queries the active tab and runs Mozilla Readability in an isolated context to extract clean article markup. If you highlighted text, it extracts and sanitizes the DOM selection instead.
-2. **Intermediate Representation**: The captured content and metadata are standardized into an intermediate format with title, author, source URL, excerpt, and word count.
-3. **Conversion**: Turndown converts the HTML into clean GitHub Flavored Markdown, and js-yaml generates the structured header.
-4. **Safe Download**: The markdown string is formatted as a UTF-8 data URL and passed to the background service worker, ensuring the download completes reliably even if the popup window closes immediately.
+1. **Extract** — Mozilla Readability runs in the active tab via
+   `browser.scripting.executeScript`. If text is selected, the DOM range is
+   cloned and sanitized instead.
+2. **Normalize** — content and metadata become a `CanonicalNotePayload` with
+   markdown, clean HTML, plain text, and a metadata object.
+3. **Convert** — Turndown produces GitHub Flavored Markdown. `js-yaml`
+   serializes the frontmatter block.
+4. **Dispatch** — `DispatchEngine` runs each configured adapter concurrently.
+   Local download uses a data URL routed through the background service worker
+   so it survives popup close. Obsidian uses the `obsidian://new` URI scheme.
+
+The pipeline is orchestrated by `executeClip` in
+`entrypoints/schema/clipPipeline.ts`. Both the popup and the keyboard shortcut
+call it — no duplicated logic.
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| Framework | WXT (Vite-based Manifest V3) |
+| UI | React 19 + Tailwind CSS v4 |
+| Extraction | Mozilla Readability |
+| Conversion | Turndown + turndown-plugin-gfm |
+| Serialization | js-yaml |
+| Validation | Zod |
+| Testing | Vitest + happy-dom, Playwright for runtime |
+| Package manager | pnpm |
+
+## Documentation
+
+- [`docs/architecture.md`](docs/architecture.md) — how the system works today
+- [`docs/roadmap.md`](docs/roadmap.md) — what ships next
+- [`docs/decisions.md`](docs/decisions.md) — why certain choices were made
+- [`CHANGELOG.md`](CHANGELOG.md) — release history
+- [`AGENTS.md`](AGENTS.md) — conventions for contributors and AI agents
 
 ## License
 
-MIT License. Open source and free to use.
+MIT.
